@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniGenAI - All-in-One Generative AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+    <style>
+        /* ===== Global Styles ===== */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            color: black;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* ===== Header ===== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color:white(18, 18, 18, 0.8);
+            position: relative;
+            z-index: 2;
+            color: white;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            width: 80px;
+            height: 80px;
+            margin-right: 5px;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .logout-btn img {
+            width: 100px;
+            height: 50px;
+            margin-left: 5px;
+        }
+
+        h1 {
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center;
+    color: black;
+}
+
+        /* ===== Hero Section ===== */
+        #hero {
+            margin: 50px 0;
+            position: relative;
+            z-index: 2;
+        }
+        .cta {
+            padding: 10px 20px;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        /* ===== Feature Buttons ===== */
+        .feature-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        .feature-btn {
+            padding: 10px 15px;
+            background: #333;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* ===== Background Video (Above Footer) ===== */
+        .video-container {
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            margin-top: 50px;
+        }
+        #background-video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f1f1f1;
+            color: black;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ===== Chat Icon ===== */
+        #chat-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #2575fc;
+            padding: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            z-index: 3;
+        }
+
+
+    
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <img src="static\images\omnigenaiLogo.png" alt="Tool Icon">
+            <h1>mniGenAI</h1>
+        </div>
+        <nav>
+            <ul>
+                <li>
+                    <button class="logout-btn">Log Out <img src="static\images\logout.jpg" alt="Logout Icon"></button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <h1>One Platform for All Generative AI Tools</h1>
+        <button class="cta">Get Started for Free</button>
+    </section>
+
+    <!-- Feature Buttons -->
+    <div class="feature-buttons">
+        <button class="feature-btn" onclick="location.href='/textgeneration'">Text Generation</button>
+        <button class="feature-btn" onclick="location.href='/imagegeneration'">Image Generation</button>
+        <button class="feature-btn" onclick="location.href='/videogeneration'">Video Generation</button>
+        <button class="feature-btn" onclick="location.href='/moretools'">More AI Tools</button>
+    </div>
+
+    <!-- Background Video Section (Above Footer) -->
+    <div class="video-container">
+        <video autoplay loop muted playsinline id="background-video">
+            <source src="static\images\Screen Recording 2025-02-13 101606.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 OmniGenAI. All rights reserved.</p>
+    </footer>
+
+    <!-- Chat Icon -->
+    <div id="chat-icon">💬 Chat</div>
+    <script>
+        document.getElementById("chat-icon").addEventListener("click", function() {
+            window.location.href = "/chat";
+        });
+    </script>
+
+    <!-- JavaScript -->
+    <script>
+        // Redirect chat icon to chat page
+        document.getElementById("chat-icon").addEventListener("click", function() {
+            window.location.href = "/chat";
+        });
+
+        // Logout button functionality
+        document.querySelector(".logout-btn").addEventListener("click", function() {
+            alert("You have been logged out!");
+            window.location.href = "/front";
+        });
+    </script>
+
+</body>
+</html>

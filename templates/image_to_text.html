@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🖼️ Image to Text Captioning</title>
+
+    <!-- Particle.js Animated Background -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 20px;
+            color: #fff;
+            overflow: hidden;
+            position: relative;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        /* Fullscreen Particle Canvas */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: radial-gradient(circle, rgba(20, 20, 50, 1) 20%, rgba(10, 10, 30, 1) 100%);
+        }
+
+        /* Smooth Fade-in Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Downward Slide Animation */
+        @keyframes slideDown {
+            0% { transform: translateY(-30px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            color: #00ffff;
+            text-shadow: 2px 2px 12px rgba(0, 255, 255, 0.8);
+        }
+
+        input[type="file"] {
+            padding: 12px;
+            font-size: 1.1em;
+            margin: 10px;
+            border: 2px solid #00ffff;
+            border-radius: 20px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            text-align: center;
+            box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.3);
+            transition: 0.3s;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 1.2em;
+            background: #00ffff;
+            color: black;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        button:hover {
+            background: #0099cc;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 1);
+        }
+
+        #imagePreview img {
+            max-width: 100%;
+            margin-top: 20px;
+            border-radius: 20px;
+            box-shadow: 5px 5px 15px rgba(0, 255, 255, 0.4);
+            transition: all 0.5s ease;
+        }
+
+        img:hover {
+            transform: scale(1.02);
+        }
+
+        #captionText {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.3);
+            display: inline-block;
+        }
+
+        /* Soft-Rounded Box with Downward Motion */
+        .container {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 25px;
+            width: 60%;
+            max-width: 500px;
+            border-radius: 30px; /* Smooth curved edges */
+            display: inline-block;
+            box-shadow: 5px 5px 30px rgba(0, 255, 255, 0.3);
+            position: relative;
+            z-index: 1;
+            animation: slideDown 1.5s ease-in-out;
+        }
+
+        .nav-buttons { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .nav-buttons button { width: 50px; height: 50px; font-size: 20px; border-radius: 50%; border: none; background: cyan; color: black; cursor: pointer; box-shadow: 0px 0px 10px cyan; }
+        .nav-buttons button:hover { background: white; box-shadow: 0px 0px 15px cyan; }
+    </style>
+</head>
+<body>
+
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+
+    <div class="container">
+        <h1>🖼️ Image to Text Captioning</h1>
+        <p>Upload an image & let AI describe it! 📷✨</p>
+        <div class="upload-box">
+            <input type="file" id="imageInput" accept="image/*">
+            <button onclick="uploadImage()">📝 Generate Caption</button>
+        </div>
+        <div id="imagePreview"></div>
+        <p id="captionText"></p>
+    </div>
+
+    <div class="nav-buttons">
+        <button onclick="scrollToTop()">⬆</button>
+        <button onclick="scrollToBottom()">⬇</button>
+    </div>
+    <script>
+        function uploadImage() {
+            let input = document.getElementById("imageInput").files[0];
+            if (!input) {
+                alert("⚠️ Please select an image first!");
+                return;
+            }
+            let formData = new FormData();
+            formData.append("image", input);
+            document.getElementById("captionText").innerText = "🔄 Generating caption... Please wait... ⏳";
+            fetch("/upload_images", {  // ✅ Corrected URL
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("captionText").innerText = "📝 Caption: " + data.caption;
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            document.getElementById("captionText").innerText = "❌ Error generating caption.";
+        });
+        // Display selected image preview with smooth transition
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById("imagePreview").innerHTML = `<img src="${e.target.result}" alt="Uploaded Image">`;
+        };
+        reader.readAsDataURL(input);
+    }
+
+
+        // Particle.js Configuration (Darker Theme with More Interactivity)
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 120, density: { enable: true, value_area: 1000 } },
+                color: { value: "#00ffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.7, random: true },
+                size: { value: 4, random: true },
+                line_linked: { enable: true, distance: 130, color: "#00ffff", opacity: 0.6, width: 1.5 },
+                move: { enable: true, speed: 3, direction: "none", random: true }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "bubble" },
+                    onclick: { enable: true, mode: "repulse" }
+                },
+                modes: {
+                    bubble: { distance: 200, size: 6, duration: 2, opacity: 1 },
+                    repulse: { distance: 150, duration: 0.4 }
+                }
+            },
+            retina_detect: true
+        });
+    </script>
+
+</body>
+</html>

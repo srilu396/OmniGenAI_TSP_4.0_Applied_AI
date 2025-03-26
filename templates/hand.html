@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Handwriting to Text</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
+        body { 
+            background: linear-gradient(135deg, #0a0a0a, #1a1a2e);
+            color: #00ffff;
+            text-align: center; 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            flex-direction: column; 
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        #particles-js { 
+            position: absolute; 
+            width: 100%; 
+            height: 100%; 
+            top: 0; 
+            left: 0; 
+            z-index: -1; 
+        }
+        .container { 
+            background: rgba(255, 255, 255, 0.15); 
+            backdrop-filter: blur(15px);
+            padding: 30px; 
+            border-radius: 20px; 
+            width: 70%; 
+            max-width: 700px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3); 
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 { font-size: 28px; margin-bottom: 15px; text-shadow: 0px 0px 15px rgba(255, 255, 255, 0.5); }
+        input { display: none; }
+        .btn { 
+            background: #00ccff; 
+            color: white; 
+            font-weight: bold; 
+            padding: 12px 20px; 
+            cursor: pointer; 
+            border-radius: 30px; 
+            box-shadow: 0px 4px 12px rgba(0, 255, 255, 0.5); 
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .btn:hover { 
+            background: #0099cc; 
+            box-shadow: 0px 6px 15px rgba(0, 255, 255, 0.7); 
+        }
+        img { 
+            max-width: 90%; 
+            border-radius: 12px; 
+            box-shadow: 0px 4px 12px rgba(0, 255, 255, 0.4); 
+        }
+        .output-container {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 12px rgba(0, 255, 255, 0.4);
+            width: 100%;
+            max-height: 250px; /* 🎯 Enable Scrolling */
+            overflow-y: auto;
+        }
+        #outputText { 
+            white-space: pre-wrap;
+            font-size: 18px;
+            color: white;
+            font-weight: 500;
+            line-height: 1.5;
+            width: 100%;
+            text-align: left;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .copy-btn {
+            background: #ffbb33;
+            color: black;
+            border: none;
+            padding: 8px 15px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .copy-btn:hover {
+            background: #e69a00;
+        }
+        .loading {
+            display: none;
+            font-size: 18px;
+            color: #00ccff;
+            font-weight: bold;
+            margin-top: 12px;
+        }
+        @media (max-width: 768px) {
+            .container { width: 90%; }
+            img { max-width: 90%; }
+        }
+
+
+        #outputText {
+            white-space: pre-wrap;
+            font-size: 18px;
+            color: black;
+            font-weight: 500;
+            line-height: 1.5;
+            width: 100%;
+            text-align: left;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(240, 240, 240, 0.9);
+            max-height: 250px; /* ✅ Limits the height */
+            overflow-y: auto;  /* ✅ Enables vertical scrolling */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="particles-js"></div>  <!-- 🎆 Moving Background Animation -->
+
+    <h1>✍️ AI Handwriting to Text Converter</h1>
+    <div class="container">
+        <label class="btn" for="upload">📤 Upload Handwriting</label>
+        <input type="file" id="upload" accept="image/*">
+
+        <div class="loading" id="loading">⏳ Extracting text... Please wait...</div>
+
+        <div class="output-container">
+            <h3>📝 Extracted Text:</h3>
+            <pre id="outputText">Waiting for input...</pre>
+            <button class="copy-btn" onclick="copyText()">📋 Copy Text</button>
+        </div>
+    </div>
+
+    <script>
+        function copyText() {
+            let text = document.getElementById("outputText").innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("✅ Text copied to clipboard!");
+            }).catch(err => {
+                alert("❌ Failed to copy text!");
+            });
+        }
+
+        document.getElementById("upload").addEventListener("change", function(event) {
+            let file = event.target.files[0];
+            if (!file) return;
+
+            let formData = new FormData();
+            formData.append("file", file);
+
+            document.getElementById("loading").style.display = "block";
+
+            fetch("/", { method: "POST", body: formData })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("loading").style.display = "none";
+                document.getElementById("outputText").innerText = data.text || "⚠️ No text detected!";
+            });
+        });
+    </script>
+
+    <!-- 🌌 Particle.js Moving Animation Background -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 120, density: { enable: true, value_area: 900 } },
+                color: { value: ["#ffffff", "#00ffff", "#66ccff"] },  /* 🎆 Adjusted Particle Colors */
+                shape: { type: "circle" },
+                opacity: { value: 0.7, random: false },
+                size: { value: 4, random: true }, /* 🎯 Increased Visibility */
+                line_linked: { enable: true, distance: 120, color: "#00ffff", opacity: 0.5, width: 1.2 },
+                move: { enable: true, speed: 2, direction: "none", random: false }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" }
+                },
+                modes: {
+                    repulse: { distance: 100 },
+                    push: { particles_nb: 4 }
+                }
+            },
+            retina_detect: true
+        });
+    </script>
+
+    <script>
+document.getElementById("uploadForm").onsubmit = async function(event) {
+    event.preventDefault(); // Prevent page reload
+
+    let formData = new FormData();
+    let imageFile = document.getElementById("imageInput").files[0];
+
+    if (!imageFile) {
+        alert("Please select an image first!");
+        return;
+    }
+
+    formData.append("image", imageFile);
+
+    try {
+        let response = await fetch("http://127.0.0.1:8000/convert_text", {
+            method: "POST",
+            body: formData
+        });
+
+        let result = await response.json();
+        document.getElementById("outputText").innerText = result.text || "Processing...";
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Failed to process the image!");
+    }
+};
+</script>
+
+
+</body>
+</html>

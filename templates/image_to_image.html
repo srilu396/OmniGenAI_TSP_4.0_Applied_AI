@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🖼️ AI Image Effects</title>
+
+    <!-- Particle.js Animated Background -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 20px;
+            color: #fff;
+            overflow: hidden;
+            position: relative;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        /* Fullscreen Particle Canvas */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: radial-gradient(circle, rgba(20, 20, 50, 1) 20%, rgba(10, 10, 30, 1) 100%);
+        }
+
+        /* Smooth Fade-in Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Downward Slide Animation */
+        @keyframes slideDown {
+            0% { transform: translateY(-30px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            color: #fcfcfc;
+            text-shadow: 2px 2px 12px rgba(0, 255, 255, 0.8);
+        }
+
+        /* Glassmorphism Container */
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            width: 60%;
+            max-width: 500px;
+            border-radius: 20px;
+            display: inline-block;
+            box-shadow: 5px 5px 30px rgba(0, 255, 255, 0.3);
+            position: relative;
+            z-index: 1;
+            animation: slideDown 1.5s ease-in-out;
+        }
+
+        input[type="file"] {
+            padding: 12px;
+            font-size: 1.1em;
+            margin: 10px;
+            border: 2px solid #00ffff;
+            border-radius: 15px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            text-align: center;
+            box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.3);
+            transition: 0.3s;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1em;
+            border-radius: 15px;
+            border: 2px solid #00ffff;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.3);
+            transition: 0.3s;
+            outline: none;
+            cursor: pointer;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 1.2em;
+            background: #00ffff;
+            color: black;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        button:hover {
+            background: #0099cc;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 1);
+        }
+
+        /* Image Preview */
+        .image-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .image-container img {
+            width: 300px;
+            border-radius: 15px;
+            margin: 10px;
+            transition: all 0.5s ease-in-out;
+            opacity: 0;
+        }
+
+        .image-container img.loaded {
+            opacity: 1;
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+
+    <h1>🎨 AI Image Effects</h1>
+    <p>Upload an image & apply amazing AI-powered effects! ✨</p>
+    
+    <div class="container">
+        <input type="file" id="imageUpload" accept="image/*">
+        <br>
+        <select id="effectSelect">
+            <option value="sketch">✏️ Sketch</option>
+            <option value="watercolor">🎨 Watercolor</option>
+            <option value="hd">📷 HD Enhancement</option>
+            <option value="neon_glow">💡 Neon Glow</option>
+            <option value="3d_effect">🕶️ 3D Effect</option>
+            <option value="cartoon">📺 Cartoonize</option>
+        </select>
+        <br>
+        <button onclick="applyEffect()">✨ Apply Effect</button>
+    </div>
+
+    <div class="image-container">
+        <img id="originalImage" src="" alt="Original Image">
+        <img id="processedImage" src="" alt="Processed Image">
+    </div>
+
+    <script>
+        function applyEffect() {
+            const fileInput = document.getElementById("imageUpload");
+            const effect = document.getElementById("effectSelect").value;
+
+            if (!fileInput.files.length) {
+                alert("⚠️ Please upload an image!");
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append("image", fileInput.files[0]);
+            formData.append("effect", effect);
+
+            fetch("http://127.0.0.1:5000/upload", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                let url = URL.createObjectURL(blob);
+                document.getElementById("originalImage").src = URL.createObjectURL(fileInput.files[0]);
+                document.getElementById("processedImage").src = url;
+                document.getElementById("originalImage").classList.add("loaded");
+                document.getElementById("processedImage").classList.add("loaded");
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        // Particle.js Configuration
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 120, density: { enable: true, value_area: 1000 } },
+                color: { value: "#00ffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.7, random: true },
+                size: { value: 4, random: true },
+                line_linked: { enable: true, distance: 130, color: "#00ffff", opacity: 0.6, width: 1.5 },
+                move: { enable: true, speed: 3, direction: "none", random: true }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "bubble" },
+                    onclick: { enable: true, mode: "repulse" }
+                },
+                modes: {
+                    bubble: { distance: 200, size: 6, duration: 2, opacity: 1 },
+                    repulse: { distance: 150, duration: 0.4 }
+                }
+            },
+            retina_detect: true
+        });
+
+    </script>
+
+</body>
+</html>

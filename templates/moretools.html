@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniGenAI - Free AI Tools</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0D0D0D;
+            color: #E0E1DD;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header */
+        header {
+            padding: 20px;
+            background: linear-gradient(90deg, #007bff, #9D00FF);
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
+        }
+
+        /* Search & Filter */
+        input, select {
+            padding: 10px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        /* Tool Cards */
+        #tool-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .tool-card {
+            background: #1B1B1B;
+            padding: 20px;
+            margin: 15px;
+            border-radius: 10px;
+            width: 250px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 255, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #00A3FF, 0 0 25px #9D00FF;
+        }
+
+        /* Tool Images */
+        .tool-card img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
+        }
+
+        /* Buttons */
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #00A3FF;
+            color: black;
+            box-shadow: 0 0 15px #00A3FF, 0 0 25px #9D00FF;
+        }
+
+        /* Visit Button */
+        .visit-btn {
+            background: #00A3FF;
+            font-weight: bold;
+        }
+
+        .visit-btn:hover {
+            background: #9D00FF;
+            box-shadow: 0 0 15px #9D00FF, 0 0 25px #00A3FF;
+        }
+
+        /* Hidden Info */
+        .hidden-info {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>OmniGenAI - Free AI Tools</h1>
+        <input type="text" id="searchInput" placeholder="Search..." onkeyup="searchFunction()">
+        <select id="filter">
+            <option value="all">All Categories</option>
+            <option value="text">Text-Based AI</option>
+            <option value="image">Image-Based AI</option>
+            <option value="audio">Audio-Based AI</option>
+            <option value="video">Video-Based AI</option>
+            <option value="code">Code-Based AI</option>
+            <option value="game">Game-Based AI</option>
+            <option value="education">education</option>
+            <option value="productivity">Productivity</option>
+            <option value="design">Design-Based AI</option>
+            <option value="development">Development-Based AI</option>
+            <option value="maps">Exploration(map)-Based AI</option>
+        </select>
+    </header>
+
+    <main>
+        <div id="tool-container">
+            <!-- AI Tools (Example Tools) -->
+            <div class="tool-card item" data-category="text">
+                <img src="https://tse2.mm.bing.net/th?id=OIP.9TZ8LcYn1uXte4B723kCpwHaHa&pid=Api&P=0&h=180" alt="ChatGPT">
+                <h3>ChatGPT</h3>
+                <p>An AI chatbot for text generation.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Helps in writing, brainstorming, and answering questions.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://chat.openai.com'">Visit</button>
+            </div>
+
+            <div class="tool-card item" data-category="image">
+                <img src="https://stablediffusionweb.com/images/logo.png" alt="stable diffusion">
+                <h3>Stable Diffusion</h3>
+                <p>AI-powered image generation tool.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Generates high-quality AI images from text descriptions.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://stablediffusionweb.com/'">Visit</button>
+            </div>
+             <!-- Unriddle.ai (Productivity) -->
+            <div class="tool-card item" data-category="productivity">
+                <img src="https://tse1.mm.bing.net/th?id=OIP.YgWQb8Qtz0hIKIKZjAr7RQAAAA&pid=Api&P=0&h=180" alt="Unriddle.ai">
+                <h3>Unriddle.ai</h3>
+                <p>AI-driven data analysis and insights.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Unriddle.ai helps analyze complex datasets, providing visual insights for better decision-making.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://unriddle.ai'">Visit</button>
+            </div>
+        
+            <!-- InVideo.io (Video-Based AI) -->
+            <div class="tool-card item" data-category="video">
+                <img src="https://web-assets.invideo.io/common/prod/logos/invideo-ai-light.svg" alt="InVideo.io">
+                <h3>InVideo.io</h3>
+                <p>Online video creation platform.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Enables users to create high-quality videos using customizable templates and stock media.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://invideo.io'">Visit</button>
+            </div>
+        
+            <!-- Claid.ai (Image-Based AI) -->
+            <div class="tool-card item" data-category="image">
+                <img src="https://claid.ai/static/c20b56b4962276003ac2d15477e086ff/Logo_footer_inline_b9891b726e.svg" alt="Claid.ai">
+                <h3>Claid.ai</h3>
+                <p>AI-powered image enhancement.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Improves image resolution and clarity, making it ideal for media and e-commerce platforms.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://claid.ai'">Visit</button>
+            </div>
+        
+            <!-- Hireflow.net (Productivity) -->
+            <div class="tool-card item" data-category="productivity">
+                <img src="https://www.hireflow.net/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Ffavicon.7b8f859e.png&w=96&q=75" alt="Hireflow.net">
+                <h3>Hireflow.net</h3>
+                <p>AI-powered ATS resume checker.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Analyzes and optimizes resumes to increase chances of passing Applicant Tracking Systems (ATS).</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://hireflow.net'">Visit</button>
+            </div>
+        
+            <!-- Arcodespot.com (Game-Based AI) -->
+            <div class="tool-card item" data-category="game">
+                <img src="https://arcadespot.com/images/logo-original.png" alt="Arcodespot.com">
+                <h3>Arcodespot.com</h3>
+                <p>Play games in the browser for free.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Provides a platform to play various online games directly in your browser.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://arcadespot.com'">Visit</button>
+            </div>
+        
+            <!-- Mapgenie.io (Game-Based AI) -->
+            <div class="tool-card item" data-category="game">
+                <img src="https://cdn.mapgenie.io/images/mapgenie.png" alt="Mapgenie.io">
+                <h3>Mapgenie.io</h3>
+                <p>Interactive game maps.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Provides detailed maps for various video games, helping players locate in-game items and quests.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://mapgenie.io'">Visit</button>
+            </div>
+            <div class="tool-card item" data-category="education">
+                <img src="https://schoolgoat.com/static/media/chillGirl.d197d368460125d2cd68.png" alt="SchoolGoat">
+                <h3>SchoolGoat</h3>
+                <p>Convert class files into notes, flashcards, and quizzes.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>SchoolGoat helps students and educators by transforming class materials into structured study resources.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://schoolgoat.com'">Visit</button>
+            </div>
+        
+            <div class="tool-card item" data-category="productivity">
+                <img src="https://gamma.app/_next/static/media/gamma-logo-black.5914e71f.svg" alt="Gamma">
+                <h3>Gamma</h3>
+                <p>AI-powered presentation creation.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Gamma.app allows users to create visually appealing presentations effortlessly using AI-driven design and content suggestions.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://gamma.app'">Visit</button>
+            </div>
+        
+            <div class="tool-card item" data-category="productivity">
+                <img src="https://up.yimg.com/ib/th?id=OIP.xQS4NCC3ivjwAci8O_IY6wHaFB&pid=Api&rs=1&c=1&qlt=95&w=149&h=101" alt="WolframAlpha">
+                <h3>WolframAlpha</h3>
+                <p>Solves mathematical, physics, and chemistry problems.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>WolframAlpha is a powerful computational knowledge engine that provides step-by-step solutions for complex queries.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://wolframalpha.com'">Visit</button>
+            </div>
+        
+            <div class="tool-card item" data-category="productivity">
+                <img src="https://up.yimg.com/ib/th?id=OIP.xzOOkPiPcwTl09MqLew6ngAAAA&pid=Api&rs=1&c=1&qlt=95&w=120&h=120" alt="FlowCV">
+                <h3>FlowCV</h3>
+                <p>Create professional resumes online.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>FlowCV offers AI-enhanced resume templates and customization tools for job seekers.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://flowcv.com'">Visit</button>
+            </div>
+        
+            <div class="tool-card item" data-category="productivity">
+                <img src="https://up.yimg.com/ib/th?id=OIP.I6kVyWpGokQgwgUDRjRu6gHaHa&pid=Api&rs=1&c=1&qlt=95&w=111&h=111" alt="Zty.pe">
+                <h3>Zty.pe</h3>
+                <p>Typing game to improve speed and accuracy.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Zty.pe is an engaging game that helps users enhance their typing skills by destroying words with accurate keystrokes.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://zty.pe'">Visit</button>
+            </div>
+            <div class="tool-card item" data-category="code">
+                <img src="https://coddy.tech/images/bit.svg" alt="Coddy.tech">
+                <h3>Coddy.tech</h3>
+                <p>Helps you learn by practicing writing code.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Coddy.tech is an AI-powered code assistant that provides interactive learning experiences to improve coding skills.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://coddy.tech'">Visit</button>
+            </div>
+        
+            <!-- Litsolutions.org -->
+            <div class="tool-card item" data-category="education">
+                <img src="https://up.yimg.com/ib/th?id=OIP.eaU-O9L63KwJusTPoRGmUQHaDq&pid=Api&rs=1&c=1&qlt=95&w=229&h=113" alt="Litsolutions">
+                <h3>Litsolutions.org</h3>
+                <p>Search textbooks, chapters, and exercises with step-by-step solutions.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Litsolutions provides structured solutions to textbook problems, making it easier for students to grasp concepts.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://litsolutions.org'">Visit</button>
+            </div>
+        
+            <!-- Filmora -->
+            <div class="tool-card item" data-category="video">
+                <img src="https://neveragain.allstatics.com/2019/assets/icon/logo/filmora-square.svg" alt="Filmora">
+                <h3>Filmora</h3>
+                <p>A powerful video editing tool.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Filmora is a user-friendly video editing platform offering effects, transitions, and templates.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://filmora.wondershare.net'">Visit</button>
+            </div>
+        
+            <!-- Tailornova -->
+            <div class="tool-card item" data-category="design">
+                <img src="https://up.yimg.com/ib/th?id=OIP.z5JFTVN5_kuEGACScsf0bAAAAA&pid=Api&rs=1&c=1&qlt=95&w=112&h=112" alt="Tailornova">
+                <h3>Tailornova</h3>
+                <p>AI-powered fashion design and pattern making.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Tailornova helps fashion designers create custom clothing patterns with AI-driven tools.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://tailornova.com'">Visit</button>
+            </div>
+        
+            <!-- Apob.ai -->
+            <div class="tool-card item" data-category="image">
+                <img src="https://i0.wp.com/apob.ai/wp-content/uploads/2024/04/Frame.png?w=350&ssl=1" alt="Apob.ai">
+                <h3>Apob.ai</h3>
+                <p>Create your own AI-generated avatar.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Apob.ai allows users to create personalized AI avatars for social media, marketing, and entertainment.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://apob.ai'">Visit</button>
+            </div>
+        
+            <!-- Napkin.ai -->
+            <div class="tool-card item" data-category="productivity">
+                <img src="https://www.napkin.ai/assets/napkin-logo-2024-beta.svg" alt="Napkin.ai">
+                <h3>Napkin.ai</h3>
+                <p>Generate stunning visuals from text.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Napkin.ai transforms textual input into visually appealing infographics, diagrams, and flowcharts.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://napkin.ai'">Visit</button>
+            </div>
+            <div class="tool-card item" data-category="design">
+                <img src="https://www.phase.com/logos/logo_white_name.svg" alt="Phase.com">
+                <h3>Phase.com</h3>
+                <p>Animate any design easily.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Phase.com offers a collaborative workspace where designers can animate and prototype designs efficiently.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://phase.com'">Visit</button>
+            </div>
+            
+            <div class="tool-card item" data-category="productivity">
+                <img src="https://sp.yimg.com/ib/th?id=OIP.kCCbeES3V21_LVT0i1m6awHaJA&pid=Api&w=148&h=148&c=7&dpr=2&rs=1" alt="Firefiles.com">
+                <h3>Firefiles.com</h3>
+                <p>Transcribe all your meetings.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Firefiles.com uses AI to transcribe and summarize meetings, making it easier to track discussions and key points.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://firefiles.com'">Visit</button>
+            </div>
+            
+            <div class="tool-card item" data-category="design">
+                <img src="https://tse3.mm.bing.net/th?id=OIP.i-irbvrh5Lj6VrE70gxCoAHaFg&pid=Api&P=0&h=180" alt="Text-to-CAD">
+                <h3>Text-to-CAD (zoo.dev)</h3>
+                <p>Generate 3D models using text.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Text-to-CAD allows users to generate 3D models and control their dimensions using text-based commands.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://text-to-cad.zoo.dev'">Visit</button>
+            </div>
+            
+            <div class="tool-card item" data-category="development">
+                <img src="https://cdn-imgs.dora.run/design/FVN5qCpAkQOIaip6oN07jP.png/w/4096/h/4096/format/webp?" alt="Dora.run">
+                <h3>Dora.run</h3>
+                <p>Customize a 3D website in seconds.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Dora.run enables developers to quickly generate and customize 3D websites with minimal effort.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://dora.run'">Visit</button>
+            </div>
+            
+            <div class="tool-card item" data-category="maps">
+                <img src="https://up.yimg.com/ib/th?id=OIP.OKzVORN5Sxr0TT-oYHjtHAHaHw&pid=Api&rs=1&c=1&qlt=95&w=104&h=109" alt="Google Earth Studio">
+                <h3>Google Earth Studio</h3>
+                <p>Travel the world from your computer for free.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Google Earth Studio allows users to explore and create animations using high-resolution satellite imagery.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://google.com/earth/studio/'">Visit</button>
+            </div>
+            
+            <div class="tool-card item" data-category="video">
+                <img src="https://up.yimg.com/ib/th?id=OIP.EoJmarxWeCNrnET60euSHgHaHa&pid=Api&rs=1&c=1&qlt=95&w=110&h=110" alt="InVideo.io">
+                <h3>InVideo.io</h3>
+                <p>Generate a unique and complete storyline from a simple prompt.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>InVideo.io allows users to create engaging videos with AI-generated scripts and templates.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://invideo.io'">Visit</button>
+            </div>
+            
+            <div class="tool-card item" data-category="design">
+                <img src="https://www.pacdora.com/_pacui/image/logo-3.6.0.svg" alt="Pacdora">
+                <h3>Pacdora.com</h3>
+                <p>Mockup and dieline template platform.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Pacdora provides customizable 3D packaging mockups and dieline templates for designers.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://pacdora.com'">Visit</button>
+            </div>
+            
+            <div class="tool-card item" data-category="design">
+                <img src="https://cdn.venngage.com/template/img/venngage-logo-with-name.svg" alt="Venngage">
+                <h3>Venngage.com</h3>
+                <p>Turn text into infographics, brochures, and mind maps.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Venngage's AI-powered tools help users create visually appealing infographics and business documents effortlessly.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://venngage.com/ai-tools'">Visit</button>
+            </div>
+            <div class="tool-card item" data-category="productivity">
+                <img src="https://cdn.prod.website-files.com/671f9e6bc06267864b5770e6/671fa1c6a241f5cf851f5e15_logo.svg" alt="Writesonic">
+                <h3>Writesonic</h3>
+                <p>AI-powered content generation platform.</p>
+                <button onclick="toggleInfo(this)">More Info</button>
+                <div class="hidden-info">
+                    <p>Writesonic helps create blog posts, articles, ads, and product descriptions using AI.</p>
+                </div>
+                <button class="visit-btn" onclick="location.href='https://writesonic.com'">Visit</button>
+            </div>
+            <!-- Synthesis -->
+    <div class="tool-card item" data-category="audio-video">
+        <img src="https://cdn.prod.website-files.com/65e89895c5a4b8d764c0d710/65eae689ace95f5017dc17a0_Logo-main.svg" alt="Synthesis">
+        <h3>Synthesis</h3>
+        <p>AI-driven voice and video synthesis platform.</p>
+        <button onclick="toggleInfo(this)">More Info</button>
+        <div class="hidden-info">
+            <p>Synthesis creates realistic AI-generated voiceovers and videos.</p>
+        </div>
+        <button class="visit-btn" onclick="location.href='https://synthesia.io'">Visit</button>
+    </div>
+    
+    <!-- Soundraw -->
+    <div class="tool-card item" data-category="audio">
+        <img src="https://cdn.soundraw.io/logo-soundraw-md.png" alt="Soundraw">
+        <h3>Soundraw</h3>
+        <p>AI music generator.</p>
+        <button onclick="toggleInfo(this)">More Info</button>
+        <div class="hidden-info">
+            <p>Soundraw generates royalty-free music tailored to user preferences.</p>
+        </div>
+        <button class="visit-btn" onclick="location.href='https://soundraw.io'">Visit</button>
+    </div>
+    
+    <!-- SlidesAI -->
+    <div class="tool-card item" data-category="productivity">
+        <img src="https://up.yimg.com/ib/th?id=OIP.lWezjsPBLqgW9ldzqQUbHwHaBt&pid=Api&rs=1&c=1&qlt=95&w=499&h=114" alt="SlidesAI">
+        <h3>SlidesAI</h3>
+        <p>AI-powered presentation generator.</p>
+        <button onclick="toggleInfo(this)">More Info</button>
+        <div class="hidden-info">
+            <p>SlidesAI generates slides from content using AI.</p>
+        </div>
+        <button class="visit-btn" onclick="location.href='https://slidesai.io'">Visit</button>
+    </div>
+    
+    <!-- Pictory -->
+    <div class="tool-card item" data-category="video">
+        <img src="https://pictory.ai/wp-content/uploads/2022/08/logo-new-font-TM.png" alt="Pictory">
+        <h3>Pictory</h3>
+        <p>AI video creation platform.</p>
+        <button onclick="toggleInfo(this)">More Info</button>
+        <div class="hidden-info">
+            <p>Pictory converts long-form content into engaging short videos.</p>
+        </div>
+        <button class="visit-btn" onclick="location.href='https://pictory.ai'">Visit</button>
+    </div>
+    
+    <!-- Wordtune -->
+    <div class="tool-card item" data-category="productivity">
+        <img src="https://cdn.prod.website-files.com/5f7e0f9d75fee6f6f546df46/6559d4e795abd345862d30ff_Group%201000007998.svg" alt="Wordtune">
+        <h3>Wordtune</h3>
+        <p>AI writing assistant.</p>
+        <button onclick="toggleInfo(this)">More Info</button>
+        <div class="hidden-info">
+            <p>Wordtune enhances writing with rephrasing and tone adjustments.</p>
+        </div>
+        <button class="visit-btn" onclick="location.href='https://www.wordtune.com'">Visit</button>
+    </div>
+    <!-- Grammarly -->
+    <div class="tool-card item" data-category="text">
+        <img src="https://static.grammarly.com/assets/files/c27eeaa1ef6e610d52e543eb9bb3679b/grammarly_logo.svg" alt="Grammarly">
+        <h3>Grammarly</h3>
+        <p>AI writing assistant.</p>
+        <button onclick="toggleInfo(this)">More Info</button>
+        <div class="hidden-info">
+            <p>Grammarly checks grammar, spelling, and style to improve writing.</p>
+        </div>
+        <button class="visit-btn" onclick="location.href='https://www.grammarly.com'">Visit</button>
+    </div>
+    <!-- Beatoven AI -->
+<div class="tool-card item" data-category="audio">
+    <img src="https://cdn.prod.website-files.com/65d772a7cbf713010f7736f6/6649e6a40e151c6ff184cb2a_Beatoven%20Logo_White-p-500.png" alt="Beatoven AI">
+    <h3>Beatoven AI</h3>
+    <p>AI-powered music generation tool.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Creates unique, royalty-free music tailored to your content.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://www.beatoven.ai'">Visit</button>
+</div>
+<!-- DALL·E -->
+<div class="tool-card item" data-category="image">
+    <img src="https://up.yimg.com/ib/th?id=OIP.lagZyDYGX2O5Mb2Ohp76ywHaEK&pid=Api&rs=1&c=1&qlt=95&w=185&h=104" alt="DALL·E">
+    <h3>DALL·E</h3>
+    <p>AI-powered image generation tool.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Generates high-quality AI images from text descriptions.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://openai.com/dall-e'">Visit</button>
+</div>
+<!-- TL;DV -->
+<div class="tool-card item" data-category="productivity">
+    <img src="https://tldv.io/wp-content/uploads/2022/04/tldvllogo.svg" alt="TL;DV">
+    <h3>TL;DV</h3>
+    <p>AI meeting recorder and transcriber.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>TL;DV records, transcribes, and summarizes online meetings.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://tldv.io/'">Visit</button>
+</div>
+
+<!-- Quetext AI Content Detector -->
+<div class="tool-card item" data-category="productivity">
+    <img src="https://www.quetext.com/assets/img/logos/primary.svg" alt="Quetext AI Content Detector">
+    <h3>Quetext AI Content Detector</h3>
+    <p>AI plagiarism checker and content detector.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Detects AI-generated and plagiarized content in text.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://www.quetext.com/'">Visit</button>
+</div>
+
+<!-- Tactiq -->
+<div class="tool-card item" data-category="productivity">
+    <img src="https://cdn.prod.website-files.com/61120cb2509e011efcf0b1e4/65b1f7d21718190360e96ebb_Tactiq-logo.svg" alt="Tactiq">
+    <h3>Tactiq</h3>
+    <p>AI-powered meeting transcrsiption tool.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Transcribes and summarizes conversations from meetings in real-time.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://tactiq.io/'">Visit</button>
+</div>
+
+<!-- Steve AI -->
+<div class="tool-card item" data-category="video">
+    <img src="https://www.steve.ai/assets/shortlandingpages/Logo@2x.png" alt="Steve AI">
+    <h3>Steve AI</h3>
+    <p>AI-powered video creation tool.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Generates videos from text descriptions and scripts.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://www.steve.ai/'">Visit</button>
+</div>
+<!-- Copy.ai -->
+<div class="tool-card item" data-category="text">
+    <img src="https://cdn.prod.website-files.com/628288c5cd3e8411b90a36a4/6797ee68ae7908e605a9a4d0_copy_logo-all-dark.svg" alt="Copy.ai">
+    <h3>Copy.ai</h3>
+    <p>AI-powered content writing tool.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Helps create blog posts, emails, ads, and social media content.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://www.copy.ai/'">Visit</button>
+</div>
+<!-- Gemini AI -->
+<div class="tool-card item" data-category="text">
+    <img src="https://up.yimg.com/ib/th?id=OIP.qxe8T3n9zVO10IoLxkUdJAHaFj&pid=Api&rs=1&c=1&qlt=95&w=159&h=119" alt="Gemini AI">
+    <h3>Gemini AI</h3>
+    <p>Google's AI-powered chatbot and assistant.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Gemini AI helps with text generation, answering questions, and AI-powered assistance.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://gemini.google.com/'">Visit</button>
+</div>
+<!-- Rev.ai -->
+<div class="tool-card item" data-category="audio">
+    <img src="https://www.rev.ai/content/curve/img/revai/logo/logo-black-mobile.svg?v=wtjDEWXNn9Cu-Vki_-j4VS6yJ86McQSlRw59dj7Tiqc" alt="Rev.ai">
+    <h3>Rev.ai</h3>
+    <p>AI-powered speech-to-text transcription.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Converts speech and audio files into text with AI.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://www.rev.ai/'">Visit</button>
+</div>
+
+<!-- Codeium -->
+<div class="tool-card item" data-category="code">
+    <img src="https://up.yimg.com/ib/th?id=OIP.JO5xnrB3qblpKagpcOe1nQAAAA&pid=Api&rs=1&c=1&qlt=95&w=79&h=79" alt="Codeium">
+    <h3>Codeium</h3>
+    <p>Free AI-powered code completion tool.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Offers real-time code predictions and suggestions to enhance developer productivity.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://codeium.com'">Visit</button>
+</div>
+
+<!-- Surfer AI Content Detector -->
+<div class="tool-card item" data-category="productivity">
+    <img src="https://tse3.mm.bing.net/th?id=OIP.4Du41l9187bVDCwrOiApoQAAAA&pid=Api&P=0&h=180" alt="Surfer AI Content Detector">
+    <h3>Surfer AI Content Detector</h3>
+    <p>Tool to detect AI-generated content.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Analyzes text to determine if it was generated by AI, ensuring content authenticity.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://surferseo.com/ai-content-detector'">Visit</button>
+</div>
+
+<!-- Notion AI -->
+<div class="tool-card item" data-category="productivity">
+    <img src="https://tse1.mm.bing.net/th?id=OIP.QBIecUlqUmWj5H2MVbv2dwHaHa&pid=Api&P=0&h=180" alt="Notion AI">
+    <h3>Notion AI</h3>
+    <p>AI assistant integrated into Notion for enhanced productivity.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Assists with content creation, brainstorming, and organizing notes within Notion.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://www.notion.so/product/ai'">Visit</button>
+</div>
+
+<!-- Luzmo AI Dashboard Builder -->
+<div class="tool-card item" data-category="development">
+    <img src="https://cdn.prod.website-files.com/64be9847db6f59a691b3503f/659c19daf991abdf0af90da4_Luzmo%20logo%20yellow.svg" alt="Luzmo AI Dashboard Builder">
+    <h3>Luzmo AI Dashboard Builder</h3>
+    <p>AI-driven dashboard creation tool.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Enables users to build interactive dashboards with minimal effort using AI.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://www.luzmo.com'">Visit</button>
+</div>
+
+<!-- Designify -->
+<div class="tool-card item" data-category="design">
+    <img src="https://www.designify.com/designify_logo_color_dark.svg" alt="Designify">
+    <h3>Designify</h3>
+    <p>AI-powered design enhancement tool.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Automatically removes backgrounds and enhances images for professional use.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://designify.com'">Visit</button>
+</div>
+<!-- Leonardo AI -->
+<div class="tool-card item" data-category="image">
+    <img src="https://leonardo.ai/wp-content/uploads/2024/11/leonardo-logo-white-fix.svg" alt="Leonardo AI">
+    <h3>Leonardo AI</h3>
+    <p>AI-driven image generation platform.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Generates high-quality images from textual descriptions using advanced AI models.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://leonardo.ai'">Visit</button>
+</div>
+
+<!-- Durable AI -->
+<div class="tool-card item" data-category="development">
+    <img src="https://tse1.mm.bing.net/th?id=OIP.AAlTX5ydDpOop-xey6sEtgAAAA&pid=Api&P=0&h=180" alt="Durable AI">
+    <h3>Durable AI</h3>
+    <p>AI-powered website builder.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Creates fully designed websites in minutes using artificial intelligence.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://durable.co'">Visit</button>
+</div>
+
+<!-- DeepL -->
+<div class="tool-card item" data-category="productivity">
+    <img src="https://static.deepl.com/img/logo/deepl-logo-blue.svg" alt="DeepL">
+    <h3>DeepL</h3>
+    <p>AI-based translation service.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Provides accurate and context-aware translations for multiple languages.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://www.deepl.com'">Visit</button>
+</div>
+
+<!-- Remove.bg -->
+<div class="tool-card item" data-category="design">
+    <img src="https://tse4.mm.bing.net/th?id=OIP.4yaCVnXEInkUNTQLxBktOAHaHa&pid=Api&P=0&h=180" alt="Remove.bg">
+    <h3>Remove.bg</h3>
+    <p>AI tool for background removal.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Instantly removes backgrounds from images, making them transparent for easy editing.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://www.remove.bg'">Visit</button>
+</div>
+         <!-- Pop AI -->
+<div class="tool-card item" data-category="productivity">
+    <img src="https://tse4.mm.bing.net/th?id=OIP.QDZ91LcgxEyd4HJSSC9paAAAAA&pid=Api&P=0&h=180" alt="Pop AI">
+    <h3>Pop AI</h3>
+    <p>AI-powered productivity tool for chat, reading, writing, and presentations.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Pop AI offers instant answers, PDF reading, and content generation, all enhanced by search integration.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://www.popai.pro/en/'">Visit</button>
+</div>
+
+<!-- Copilot -->
+<div class="tool-card item" data-category="code">
+    <img src="https://tse3.mm.bing.net/th?id=OIP.47mMK1TDQyKF28TuRkcdFwHaHa&pid=Api&P=0&h=180" alt="Copilot">
+    <h3>Copilot</h3>
+    <p>AI-powered code completion and assistance tool.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Copilot assists developers by providing code suggestions and completions directly in the code editor.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://github.com/features/copilot'">Visit</button>
+</div>
+
+<!-- DeepSeek -->
+<div class="tool-card item" data-category="text">
+    <img src="https://tse3.mm.bing.net/th?id=OIP.LqHtJVIZjIWuoFfq3cA5OQHaEK&pid=Api&P=0&h=180" alt="DeepSeek">
+    <h3>DeepSeek</h3>
+    <p>Advanced AI search and data insights tool.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>DeepSeek provides refined, context-based search results and predictive analytics for data insights.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://deepseek.ai/'">Visit</button>
+</div>
+
+<!-- Brad AI -->
+<div class="tool-card item" data-category="text">
+    <img src="https://tse3.mm.bing.net/th?id=OIP.pn8moACHYyBr6G2zXj7MYwHaFj&pid=Api&P=0&h=180" alt="Brad AI">
+    <h3>Brad AI</h3>
+    <p>AI-powered chatbot and virtual assistant.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Brad AI assists with answering questions, providing information, and automating tasks through conversational interactions.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://brad.ai/'">Visit</button>
+</div>
+
+<!-- Purplex -->
+<div class="tool-card item" data-category="text">
+    <img src="https://purplex.io/images/logo.png" alt="Purplex">
+    <h3>Purplex</h3>
+    <p>AI-powered knowledge retrieval and answer generation tool.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Purplex excels at providing detailed and well-structured responses by retrieving information from multiple sources.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://purplex.ai/'">Visit</button>
+</div>
+
+<!-- Blackbox -->
+<div class="tool-card item" data-category="code">
+    <img src="https://tse1.mm.bing.net/th?id=OIP.HeHKbgcHpD499BSUMAADZQAAAA&pid=Api&P=0&h=180" alt="Blackbox">
+    <h3>Blackbox</h3>
+    <p>AI-powered code generation and assistance tool.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Blackbox assists developers by generating code snippets and providing coding solutions based on user input.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://blackbox.ai/'">Visit</button>
+</div>
+<!-- Dungeon Scrawl -->
+<div class="tool-card item" data-category="design">
+    <img src="https://www.dungeonscrawl.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo_roll20.79eb3036.png&w=1920&q=75" alt="Dungeon Scrawl">
+    <h3>Dungeon Scrawl</h3>
+    <p>Free online map-making tool for tabletop games.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Dungeon Scrawl allows users to create detailed dungeon maps quickly and easily for games like Dungeons & Dragons.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://dungeonscrawl.com'">Visit</button>
+</div>
+
+<!-- ScribeHow -->
+<div class="tool-card item" data-category="productivity">
+    <img src="https://cdn.prod.website-files.com/615f415173b71a5211e28de7/646bd24cf1086e71cd21a2a7_nav-logo.svg" alt="ScribeHow">
+    <h3>ScribeHow</h3>
+    <p>Tool for creating step-by-step guides and documentation.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>ScribeHow enables users to capture workflows and generate visual guides automatically, enhancing training and onboarding processes.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://scribehow.com'">Visit</button>
+</div>
+<!-- Loecsen -->
+<div class="tool-card item" data-category="education">
+    <img src="https://tse4.mm.bing.net/th?id=OIP.1WzpVp05LWGQu6nvS278gwHaHa&pid=Api&P=0&h=180" alt="Loecsen">
+    <h3>Loecsen</h3>
+    <p>Free online platform for learning basic phrases in various languages.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Loecsen offers interactive lessons with audio and visual aids to help users learn essential phrases for travel and daily use in multiple languages.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://loecsen.com'">Visit</button>
+</div>
+<!-- Whitescreen Online -->
+<div class="tool-card item" data-category="productivity">
+    <img src="https://tse2.mm.bing.net/th?id=OIP.R4QtCj_07kX-7Rgu4_EKYgHaEw&pid=Api&P=0&h=180" alt="Whitescreen Online">
+    <h3>Whitescreen Online</h3>
+    <p>Simple online whiteboard for collaborative brainstorming.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Whitescreen Online offers a minimalist whiteboard interface for teams to collaborate in real-time, sharing ideas and sketches effortlessly.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://whitescreen.online'">Visit</button>
+</div>
+<!-- SuperCook -->
+<div class="tool-card item" data-category="productivity">
+    <img src="https://tse1.mm.bing.net/th?id=OIP.Q-2V2Cc80XfhNJgeeCY94gHaE_&pid=Api&P=0&h=180" alt="SuperCook">
+    <h3>SuperCook</h3>
+    <p>Recipe discovery based on ingredients you have at home.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>SuperCook allows users to input available ingredients and suggests recipes that can be made without needing additional groceries.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://supercook.com'">Visit</button>
+</div>
+
+<!-- Learn Anything -->
+<div class="tool-card item" data-category="education">
+    <img src="https://tse4.mm.bing.net/th?id=OIP.L3dl0rxz6SPeHvg0ovtzgAHaHa&pid=Api&P=0&h=180" alt="Learn Anything">
+    <h3>Learn Anything</h3>
+    <p>Open-source platform for exploring and learning new topics through mind maps.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Learn Anything offers community-driven collections of mind maps that visually represent connections between topics, aiding structured learning.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://learn-anything.xyz'">Visit</button>
+</div>
+
+<!-- Roadmap.sh -->
+<div class="tool-card item" data-category="education">
+    <img src="https://tse4.mm.bing.net/th?id=OIP.fMI9Axdk9XljG2cSWww_sQAAAA&pid=Api&P=0&h=180" alt="Roadmap.sh">
+    <h3>Roadmap.sh</h3>
+    <p>Community-driven resource providing roadmaps and guides for developers.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Roadmap.sh offers structured pathways and best practices for various tech roles, helping individuals navigate their learning journey in software development.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://roadmap.sh'">Visit</button>
+</div>
+<!-- TinyWow -->
+<div class="tool-card item" data-category="productivity">
+    <img src="https://tinywow.com/v3/img/favicon-tinywow.svg" alt="TinyWow">
+    <h3>TinyWow</h3>
+    <p>Online tools for file conversions and editing.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>TinyWow provides free online tools for PDF editing, file conversion, and more.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://tinywow.com/'">Visit</button>
+</div>
+
+<!-- OpenLibrary -->
+<div class="tool-card item" data-category="education">
+    <img src="https://tse4.mm.bing.net/th?id=OIP.hQTNfTgvWd3DuHuqc6f3QgAAAA&pid=Api&P=0&h=180" alt="OpenLibrary">
+    <h3>OpenLibrary</h3>
+    <p>Online digital library for free book access.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>OpenLibrary offers free access to a vast collection of digital books for reading and borrowing.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://openlibrary.org/'">Visit</button>
+</div>
+<!-- Lostgamer -->
+<div class="tool-card item" data-category="game">
+    <img src="https://tse4.mm.bing.net/th?id=OIP.P-yx7zOaoaoXMGN15jx35AAAAA&pid=Api&P=0&h=180" alt="Lostgamer">
+    <h3>Lostgamer</h3>
+    <p>Geography-based gaming platform with map-based quizzes and challenges.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Lostgamer provides interactive games where players guess locations from map snippets, enhancing geographical knowledge.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://lostgamer.io'">Visit</button>
+</div>
+<!-- Atlas.org -->
+<div class="tool-card item" data-category="education">
+    <img src="https://tse4.mm.bing.net/th?id=OIP.-d3vwOMJ1KFzq6jr-jELmQHaHn&pid=Api&P=0&h=180" alt="Atlas.org">
+    <h3>Atlas.org</h3>
+    <p>Online platform offering educational resources.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Atlas.org provides free access to various educational materials and courses.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://www.atlas.org'">Visit</button>
+</div>
+
+<!-- UI Ball -->
+<div class="tool-card item" data-category="development">
+    <img src="https://tse4.mm.bing.net/th?id=OIP.GS6k56OyABsLtjBuYXq7QgHaFj&pid=Api&P=0&h=180" alt="UI Ball">
+    <h3>UI Ball</h3>
+    <p>Collection of tools for developers, including animations.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>UI Ball provides open-source loading animations and design resources.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://uiball.com'">Visit</button>
+</div>
+
+<!-- Layla AI -->
+<div class="tool-card item" data-category="productivity">
+    <img src="https://tse3.mm.bing.net/th?id=OIP.3_ui7y9-RKz6Mgj74MhUYAHaB-&pid=Api&P=0&h=180" alt="Layla AI">
+    <h3>Layla AI</h3>
+    <p>AI-powered travel planning assistant.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Layla AI helps users plan personalized travel itineraries with recommendations.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://layla.ai'">Visit</button>
+</div>
+
+<!-- Piccopilot -->
+<div class="tool-card item" data-category="design">
+    <img src="https://piccopilot.oss-accelerate.aliyuncs.com/daily/adminFile/fe1386961c414aeca4240a4dbfb21d12logo_black.png" alt="Piccopilot">
+    <h3>Piccopilot</h3>
+    <p>AI-powered image editing tools.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Piccopilot offers background removal, shadow addition, and other image enhancements.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://piccopilot.com'">Visit</button>
+</div>
+
+<!-- Radio Garden -->
+<div class="tool-card item" data-category="audio">
+    <img src="https://tse1.mm.bing.net/th?id=OIP.FZRRH8vyHFlNAaj1e8cZZQHaHD&pid=Api&P=0&h=180" alt="Radio Garden">
+    <h3>Radio Garden</h3>
+    <p>Explore live radio stations worldwide.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Radio Garden allows users to explore and listen to global radio stations interactively.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://radio.garden'">Visit</button>
+</div>
+    <!-- Uiverse -->
+    <div class="tool-card item" data-category="development">
+        <img src="https://uiverse.io/assets/logo-png-BXFOQKfc.png" alt="Uiverse">
+        <h3>Uiverse</h3>
+        <p>Community-driven repository of UI components.</p>
+        <button onclick="toggleInfo(this)">More Info</button>
+        <div class="hidden-info">
+            <p>Provides free access to a variety of user interface components for developers.</p>
+        </div>
+        <button class="visit-btn" onclick="location.href='https://uiverse.io'">Visit</button>
+    </div>
+    <!-- Cleanup Pictures -->
+    <div class="tool-card item" data-category="design">
+        <img src="https://tse2.mm.bing.net/th?id=OIP.wjWCbP_o5RrA0aG7fVc0CQAAAA&pid=Api&P=0&h=180" alt="Cleanup Pictures">
+        <h3>Cleanup Pictures</h3>
+        <p>Online tool for removing unwanted objects from images.</p>
+        <button onclick="toggleInfo(this)">More Info</button>
+        <div class="hidden-info">
+            <p>Provides free image cleanup services directly in the browser.</p>
+        </div>
+        <button class="visit-btn" onclick="location.href='https://cleanup.pictures'">Visit</button>
+    </div>
+
+    <!-- Printify -->
+    <div class="tool-card item" data-category="e-commerce">
+        <img src="https://tse4.mm.bing.net/th?id=OIP._jeNAMnDmAUCO99jNhCC0AHaFj&pid=Api&P=0&h=180" alt="Printify">
+        <h3>Printify</h3>
+        <p>Print-on-demand service for custom products.</p>
+        <button onclick="toggleInfo(this)">More Info</button>
+        <div class="hidden-info">
+            <p>Allows users to create and sell custom products without upfront costs.</p>
+        </div>
+        <button class="visit-btn" onclick="location.href='https://printify.com'">Visit</button>
+    </div>
+    <!-- NameSnack -->
+<div class="tool-card item" data-category="productivity">
+    <img src="https://www.namesnack.com/static/namesnack-logo-rounded-20200710.svg" alt="NameSnack">
+    <h3>NameSnack</h3>
+    <p>AI-powered business name generator.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Generates business names based on user inputs.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://www.namesnack.com'">Visit</button>
+</div>
+
+<!-- GitMind -->
+<div class="tool-card item" data-category="productivity">
+    <img src="https://cfcdn.apowersoft.info/astro/gitmind/_astro/header-logo-web.a57cd5d5.svg" alt="GitMind">
+    <h3>GitMind</h3>
+    <p>Online mind mapping and brainstorming tool.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Assists in creating mind maps and flowcharts for better planning.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://gitmind.com'">Visit</button>
+</div>
+
+<!-- You.com -->
+<div class="tool-card item" data-category="productivity">
+    <img src="https://tse2.mm.bing.net/th?id=OIP.38HlO7Hk7iZ2cJkYY9_D8QAAAA&pid=Api&P=0&h=180" alt="You.com">
+    <h3>You.com</h3>
+    <p>AI-powered search engine with personalized results.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Provides personalized search results and AI-driven tools.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://you.com'">Visit</button>
+</div>
+
+<!-- Zarla -->
+<div class="tool-card item" data-category="design">
+    <img src="https://www.zarla.com/assets/images/h-zarla-logo-20241218.svg" alt="Zarla">
+    <h3>Zarla</h3>
+    <p>AI-powered logo design platform.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Generates logos based on user inputs with customizable options.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://www.zarla.com'">Visit</button>
+</div>
+
+<!-- Freepik AI -->
+<div class="tool-card item" data-category="design">
+    <img src="https://tse1.mm.bing.net/th?id=OIP.nSx0yuaWhmQ8--lq-uW40AHaBG&pid=Api&P=0&h=180" alt="Freepik AI">
+    <h3>Freepik AI</h3>
+    <p>AI-generated images and graphics.</p>
+    <button onclick="toggleInfo(this)">More Info</button>
+    <div class="hidden-info">
+        <p>Provides a collection of AI-generated visuals for various creative needs.</p>
+    </div>
+    <button class="visit-btn" onclick="location.href='https://www.freepik.com/ai'">Visit</button>
+</div>
+    <!-- Slow Roads -->
+    <div class="tool-card item" data-category="entertainment">
+        <img src="https://slowroads.io/img/logo-stacked.svg" alt="Slow Roads">
+        <h3>Slow Roads</h3>
+        <p>Browser-based driving simulation game.</p>
+        <button onclick="toggleInfo(this)">More Info</button>
+        <div class="hidden-info">
+            <p>Provides a free, relaxing driving experience directly in the browser.</p>
+        </div>
+        <button class="visit-btn" onclick="location.href='https://slowroads.io'">Visit</button>
+    </div>
+    <!-- Keepa -->
+    <div class="tool-card item" data-category="e-commerce">
+        <img src="https://tse3.mm.bing.net/th?id=OIP.uZ_GW4lP95m2lLIkd2SwwgHaEK&pid=Api&P=0&h=180" alt="Keepa">
+        <h3>Keepa</h3>
+        <p>Amazon price tracking and history tool.</p>
+        <button onclick="toggleInfo(this)">More Info</button>
+        <div class="hidden-info">
+            <p>Provides free access to price history charts and tracking features.</p>
+        </div>
+        <button class="visit-btn" onclick="location.href='https://keepa.com'">Visit</button>
+    </div>
+
+    <!-- The True Size -->
+    <div class="tool-card item" data-category="education">
+        <img src="https://tse1.mm.bing.net/th?id=OIP.myXcLevm8wmbRaDGHW_tbAHaHa&pid=Api&P=0&h=180" alt="The True Size">
+        <h3>The True Size</h3>
+        <p>Interactive map to compare country sizes.</p>
+        <button onclick="toggleInfo(this)">More Info</button>
+        <div class="hidden-info">
+            <p>Offers a free tool to visualize the true size of countries.</p>
+        </div>
+        <button class="visit-btn" onclick="location.href='https://thetruesize.com'">Visit</button>
+    </div>
+
+    <!-- GeoFS -->
+    <div class="tool-card item" data-category="entertainment">
+        <img src="https://www.geo-fs.com/images/geofs.png" alt="GeoFS">
+        <h3>GeoFS</h3>
+        <p>Online flight simulator.</p>
+        <button onclick="toggleInfo(this)">More Info</button>
+        <div class="hidden-info">
+            <p>Provides a free, browser-based flight simulation experience.</p>
+        </div>
+        <button class="visit-btn" onclick="location.href='https://www.geo-fs.com'">Visit</button>
+    </div>
+
+    <!-- MuscleWiki -->
+    <div class="tool-card item" data-category="health-fitness">
+        <img src="https://musclewiki.com/assets/logo-2gf1TD04.png" alt="MuscleWiki">
+        <h3>MuscleWiki</h3>
+        <p>Fitness resource with exercise guides and videos.</p>
+        <button onclick="toggleInfo(this)">More Info</button>
+        <div class="hidden-info">
+            <p>Offers free access to a comprehensive library of exercises and fitness information.</p>
+        </div>
+        <button class="visit-btn" onclick="location.href='https://musclewiki.com'">Visit</button>
+    </div>
+        <!-- Typli.ai -->
+        <div class="tool-card item" data-category="productivity">
+            <img src="https://typli.ai/assets/logos/light.svg" alt="Typli.ai">
+            <h3>Typli.ai</h3>
+            <p>AI-powered writing assistant.</p>
+            <button onclick="toggleInfo(this)">More Info</button>
+            <div class="hidden-info">
+                <p>Typli.ai helps users generate high-quality content using AI-driven suggestions.</p>
+            </div>
+            <button class="visit-btn" onclick="location.href='https://www.typli.ai'">Visit</button>
+        </div>
+        <!-- Squibler.io -->
+        <div class="tool-card item" data-category="productivity">
+            <img src="https://www.squibler.io/static/images/header_logo.b9edc36bd1b4.webp" alt="Squibler.io">
+            <h3>Squibler.io</h3>
+            <p>AI-powered writing and story planning tool.</p>
+            <button onclick="toggleInfo(this)">More Info</button>
+            <div class="hidden-info">
+                <p>Squibler.io helps writers create stories, screenplays, and scripts efficiently with AI assistance.</p>
+            </div>
+            <button class="visit-btn" onclick="location.href='https://www.squibler.io'">Visit</button>
+        </div>
+    
+        <!-- Wrizzle.ai -->
+        <div class="tool-card item" data-category="text">
+            <img src="https://www.wrizzle.ai/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo-wrizzle.f928185f.png&w=1080&q=100" alt="Wrizzle.ai">
+            <h3>Wrizzle.ai</h3>
+            <p>AI-powered writing and text generation assistant.</p>
+            <button onclick="toggleInfo(this)">More Info</button>
+            <div class="hidden-info">
+                <p>Wrizzle.ai offers AI-driven assistance for content writing, rephrasing, and text improvements.</p>
+            </div>
+            <button class="visit-btn" onclick="location.href='https://www.wrizzle.ai'">Visit</button>
+        </div>
+    
+        <!-- WritingMate.ai -->
+        <div class="tool-card item" data-category="productivity">
+            <img src="https://up.yimg.com/ib/th?id=OIP.7UU6sllRWto3RbPv0YF_GwAAAA&pid=Api&rs=1&c=1&qlt=95&w=251&h=109" alt="WritingMate.ai">
+            <h3>WritingMate.ai</h3>
+            <p>AI-powered writing assistant and text enhancer.</p>
+            <button onclick="toggleInfo(this)">More Info</button>
+            <div class="hidden-info">
+                <p>WritingMate.ai helps refine writing, offering suggestions for grammar, style, and clarity.</p>
+            </div>
+            <button class="visit-btn" onclick="location.href='https://writingmate.ai'">Visit</button>
+        </div>
+    
+<!-- Add more tools similarly -->
+        </div>
+    </main>
+
+    <script>
+        // Search Function
+        function searchFunction() {
+            let input = document.getElementById("searchInput").value.toLowerCase();
+            let items = document.querySelectorAll(".item");
+
+            items.forEach(item => {
+                item.style.display = item.textContent.toLowerCase().includes(input) ? "block" : "none";
+            });
+        }
+
+        // More Info Toggle
+        function toggleInfo(button) {
+            const info = button.nextElementSibling;
+            if (info.style.display === "none" || info.style.display === "") {
+                info.style.display = "block";
+            } else {
+                info.style.display = "none";
+            }
+        }
+
+        // Filter Functionality
+        document.getElementById("filter").addEventListener("change", function() {
+            let filterValue = this.value;
+            let items = document.querySelectorAll(".item");
+
+            items.forEach(item => {
+                if (filterValue === "all" || item.dataset.category === filterValue) {
+                    item.style.display = "block";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

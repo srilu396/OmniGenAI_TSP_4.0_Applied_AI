@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Code Generator</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Arial", sans-serif;
+        }
+
+        /* Background Animation */
+        body {
+            background: linear-gradient(135deg, #0a0a0a, #1a1a2e);
+            color: #00ffff;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Particles Background */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Main Container */
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(255, 255, 255, 0.1);
+            width: 50%;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin-bottom: 10px;
+            text-shadow: 0px 0px 10px cyan;
+        }
+
+        textarea, select, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 12px;
+            border-radius: 6px;
+            border: none;
+            font-size: 16px;
+            outline: none;
+        }
+
+        textarea {
+            background: rgba(0, 0, 0, 0.2);
+            color: rgb(251, 249, 249);
+            resize: none;
+            height: 80px;
+        }
+
+        select {
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        button {
+            background: cyan;
+            color:black;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 30px;
+            box-shadow: 0px 0px 10px cyan;
+        }
+
+        button:hover {
+            background:white(233, 233, 233);
+            box-shadow: 0px 0px 15px cyan;
+        }
+
+        pre {
+            text-align: left;
+            background: rgba(0, 0, 0, 0.8);
+            color: limegreen;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            max-height: 300px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .nav-buttons { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .nav-buttons button { width: 50px; height: 50px; font-size: 20px; border-radius: 50%; border: none; background: cyan; color: black; cursor: pointer; box-shadow: 0px 0px 10px cyan; }
+        .nav-buttons button:hover { background: white; box-shadow: 0px 0px 15px cyan; }
+    </style>
+</head>
+<body>
+
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
+    <h1>🚀 AI Code Generator</h1>
+    <div class="container">
+        <label>💡 Enter your coding question:</label>
+        <textarea id="query" placeholder="E.g., Write a Python function to reverse a string"></textarea>
+
+        <label>🔍 Select a programming language:</label>
+        <select id="language">
+            <option>Python</option>
+            <option>JavaScript</option>
+            <option>Java</option>
+            <option>C++</option>
+            <option>C#</option>
+            <option>Swift</option>
+            <option>Go</option>
+            <option>Rust</option>
+        </select>
+
+        <button onclick="generateCode()">✨ Generate Code</button>
+
+        <h3>📜 Generated Code:</h3>
+        <pre id="codeOutput">Waiting for input...</pre>
+
+        <h3>📖 Explanation:</h3>
+        <pre id="explanationOutput">Waiting for input...</pre>
+    </div>
+    <div class="nav-buttons">
+        <button onclick="scrollToTop()">⬆</button>
+        <button onclick="scrollToBottom()">⬇</button>
+    </div>
+    <script>
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        function scrollToBottom() {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+    </script>
+    <script>
+        function generateCode() {
+            let query = document.getElementById("query").value.trim();
+            let language = document.getElementById("language").value;
+
+            if (query === "") {
+                alert("⚠ Please enter a coding question.");
+                return;
+            }
+
+            document.getElementById("codeOutput").innerText = "⏳ Generating code...";
+            document.getElementById("explanationOutput").innerText = "⏳ Fetching explanation...";
+
+            fetch("/generate_code", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ query: query, language: language })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert("❌ Error: " + data.error);
+                } else {
+                    document.getElementById("codeOutput").innerText = data.code;
+                    document.getElementById("explanationOutput").innerText = data.explanation;
+                }
+            })
+            .catch(error => {
+                alert("❌ Request failed: " + error);
+            });
+        }
+    </script>
+
+    <!-- Particle.js Library for Animated Background -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#00ffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: false },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: "#00ffff", opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: "none", random: false }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" }
+                },
+                modes: {
+                    repulse: { distance: 100 },
+                    push: { particles_nb: 4 }
+                }
+            },
+            retina_detect: true
+        });
+    </script>
+
+</body>
+</html>

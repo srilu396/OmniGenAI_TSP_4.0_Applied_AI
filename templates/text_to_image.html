@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🖼️ AI Text to Image Generator</title>
+    
+    <!-- Particle.js Animated Background -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 20px;
+            color: #fff;
+            overflow: hidden;
+            position: relative;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        /* Fullscreen Particle Canvas */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: radial-gradient(circle, rgba(15, 15, 40, 1) 20%, rgba(5, 5, 20, 1) 100%);
+        }
+
+        /* Smooth Fade-in Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Downward Slide Animation */
+        @keyframes slideDown {
+            0% { transform: translateY(-30px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        h2 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            color: #00ffff;
+            text-shadow: 2px 2px 12px rgba(0, 255, 255, 0.8);
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 12px;
+            font-size: 1.1em;
+            margin: 10px;
+            border: 2px solid #00ffff;
+            border-radius: 20px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            text-align: center;
+            box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.3);
+            transition: 0.3s;
+        }
+
+        input[type="text"]:focus {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0px 0px 20px rgba(0, 255, 255, 0.5);
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 1.2em;
+            background: #00ffff;
+            color: black;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        button:hover {
+            background: #0099cc;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 1);
+        }
+
+        img {
+            margin-top: 20px;
+            max-width: 80%;
+            border-radius: 20px;
+            box-shadow: 5px 5px 15px rgba(0, 255, 255, 0.4);
+            transition: all 0.5s ease;
+        }
+
+        img:hover {
+            transform: scale(1.02);
+        }
+
+        /* New Soft-Rounded Box with Downward Motion */
+        .container {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 25px;
+            width: 60%;
+            max-width: 500px;
+            border-radius: 30px; /* Smooth curved edges */
+            display: inline-block;
+            box-shadow: 5px 5px 30px rgba(0, 255, 255, 0.3);
+            position: relative;
+            z-index: 1;
+            animation: slideDown 1.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+
+    <div class="container">
+        <h2>🖼️ AI Text to Image Generator 🎨</h2>
+        <p>Describe anything, and let AI create it! ✨</p>
+        <input type="text" id="textPrompt" placeholder="Enter a creative description...">
+        <button onclick="generateImage()">🎨 Generate Image</button>
+        <br>
+        <img id="generatedImage" src="" alt="Generated Image will appear here">
+    </div>
+
+    <script>
+        function generateImage() {
+            let textPrompt = document.getElementById("textPrompt").value;
+            if (textPrompt === "") {
+                alert("⚠️ Please enter a description.");
+                return;
+            }
+
+            document.getElementById("generatedImage").src = "";
+            alert("⏳ Generating image... Please wait...");
+
+            fetch('/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: textPrompt })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.image_url) {
+                    document.getElementById("generatedImage").src = data.image_url;
+                } else {
+                    alert("❌ Failed to generate image. Try again.");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        // Particle.js Configuration (Darker Theme with More Interactivity)
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 120, density: { enable: true, value_area: 1000 } },
+                color: { value: "#00ffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.7, random: true },
+                size: { value: 4, random: true },
+                line_linked: { enable: true, distance: 130, color: "#00ffff", opacity: 0.6, width: 1.5 },
+                move: { enable: true, speed: 3, direction: "none", random: true }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "bubble" },
+                    onclick: { enable: true, mode: "repulse" }
+                },
+                modes: {
+                    bubble: { distance: 200, size: 6, duration: 2, opacity: 1 },
+                    repulse: { distance: 150, duration: 0.4 }
+                }
+            },
+            retina_detect: true
+        });
+    </script>
+
+</body>
+</html>

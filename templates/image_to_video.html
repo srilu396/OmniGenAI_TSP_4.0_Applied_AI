@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎥 AI Image to Video Converter</title>
+
+    <!-- Particle.js Animated Background -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Arial", sans-serif;
+        }
+
+        /* Background Animation */
+        body {
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: #ffffff;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #0a0a2a, #1a1a2e);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Particle Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            color: cyan;
+            text-shadow: 2px 2px 15px rgba(0, 255, 255, 0.9);
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0px 8px 20px rgba(0, 255, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        input[type="file"], select {
+            padding: 12px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            outline: none;
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            box-shadow: 0px 4px 10px rgba(0, 255, 255, 0.5);
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            background: cyan;
+            color: black;
+            transition: transform 0.2s ease-in-out, background 0.3s ease-in-out;
+            box-shadow: 0 0 10px cyan;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background: white;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px cyan;
+        }
+
+        #loading {
+            font-size: 18px;
+            margin-top: 15px;
+            color: yellow;
+            display: none;
+        }
+
+        #downloadButton {
+            display: none;
+            margin-top: 20px;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+
+    <h1>🎥 AI Image to Video Converter</h1>
+    <div class="container">
+        <input type="file" id="imageUpload" accept="image/*">
+        <button onclick="uploadImage()">📤 Upload Image</button>
+        <p id="count">🖼 Images Uploaded: 0</p>
+
+        <select id="animationType">
+            <option value="fade">✨ Fade Transition</option>
+            <option value="zoom">🔍 Zoom In & Out</option>
+            <option value="rotate">🔄 Rotate Effect</option>
+            <option value="left_right">➡ Left to Right</option>
+            <option value="up_down">⬆ Up to Down</option>
+            <option value="blur">🌫 Blur Effect</option>
+            <option value="color_shift">🎨 Color Shift</option>
+            <option value="shake">🔀 Shake Effect</option>
+            <option value="wave">🌊 Wave Effect</option>
+            <option value="brightness">☀ Brightness Adjustment</option>
+        </select>
+        <button onclick="processVideo()">🎬 Generate Video</button>
+        
+        <!-- Processing Message -->
+        <div id="loading">⏳ Processing Video...</div>
+
+        <!-- Download Video Button -->
+        <a id="downloadButton" href="#" download="output.mp4">
+            <button>📥 Download Video</button>
+        </a>
+    </div>
+    <script>
+        function uploadImage() {
+            var fileInput = document.getElementById("imageUpload");
+            if (!fileInput.files.length) {
+                alert("⚠ Please select an image first.");
+                return;
+            }
+    
+            var formData = new FormData();
+            formData.append("image", fileInput.files[0]);
+    
+            fetch("/upload", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("count").innerText = "🖼 Images Uploaded: " + data.count;
+            })
+            .catch(error => {
+                alert("❌ Upload failed. Please try again.");
+            });
+        }
+
+        function processVideo() {
+            document.getElementById("loading").style.display = "block"; // Show processing message
+
+            fetch("/process_video", { method: "POST" })
+            .then(response => {
+                document.getElementById("loading").style.display = "none"; // Hide loading message
+                document.getElementById("downloadButton").style.display = "block"; // Show download button
+                document.getElementById("downloadButton").href = "static/output.mp4"; // Set download link
+            })
+            .catch(error => {
+                alert("❌ Error processing video. Please try again.");
+                document.getElementById("loading").style.display = "none"; // Hide loading message
+            });
+        }
+    </script>        
+
+    <!-- Particle.js Animation -->
+    <script>
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 100 },
+                color: { value: "#00ffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.7, random: true },
+                size: { value: 3, random: true },
+                move: { enable: true, speed: 2 }
+            }
+        });
+    </script>
+    <script>
+        function processVideo() {
+            document.getElementById("loading").style.display = "block";
+    
+            var animationType = document.getElementById("animationType").value; // Get selected animation type
+    
+            fetch("/process_video", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"  // Set JSON content type
+                },
+                body: JSON.stringify({ animationType: animationType }) // Convert to JSON format
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("loading").style.display = "none";
+                if (data.video_url) {
+                    document.getElementById("downloadButton").style.display = "block";
+                    document.getElementById("downloadButton").href = data.video_url;
+                } else {
+                    alert("❌ Error processing video: " + data.error);
+                }
+            })
+            .catch(error => {
+                alert("❌ Error processing video. Check the console for details.");
+                console.error("Error:", error);
+                document.getElementById("loading").style.display = "none";
+            });
+        }
+    </script>
+    
+    
+    
+
+</body>
+</html>

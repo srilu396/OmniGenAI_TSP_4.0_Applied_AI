@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniGenAI - Login</title>
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#2575fc", /* Blue Gradient */
+                        secondary: "#f1f5f9", /* Light Gray */
+                        accent: "#1e3a8a", /* Dark Blue */
+                        background: "#ffffff", /* White */
+                        card: "#ffffff", /* White */
+                        text: "#333", /* Dark Grey */
+                    },
+                }
+            }
+        };
+    </script>
+
+    <style>
+        /* Light Animated Background */
+        @keyframes gradientBG {
+            0% { background: linear-gradient(45deg, #e3f2fd, #ffffff); }
+            50% { background: linear-gradient(45deg, #bbdefb, #f8f9fa); }
+            100% { background: linear-gradient(45deg, #e3f2fd, #ffffff); }
+        }
+        body {
+            animation: gradientBG 6s infinite alternate ease-in-out;
+        }
+
+        /* Heading Animation */
+        @keyframes fadeInZoom {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .animated-heading {
+            animation: fadeInZoom 1s ease-in-out;
+        }
+
+        /* Input Focus */
+        .input-focus:focus {
+            border-color: #2575fc;
+            box-shadow: 0 0 8px rgba(37, 117, 252, 0.5);
+        }
+
+        /* Button Hover */
+        .btn-hover:hover {
+            background-color: #1e3a8a;
+            transform: scale(1.05);
+            transition: 0.3s ease-in-out;
+        }
+    </style>
+
+    <!-- Google API Script -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+</head>
+<body class="flex items-center justify-center min-h-screen bg-background">
+
+    <div class="bg-card p-8 rounded-lg shadow-lg w-full max-w-md">
+        <!-- OmniGenAI Logo -->
+        <div class="flex items-center justify-center mb-4">
+            <img aria-hidden="true" alt="OmniGenAI Logo" src="static\images\omnigenaiLogo.png" class="w-16 h-16" />
+        </div>
+
+        <!-- Animated Heading -->
+        <h2 class="animated-heading text-3xl font-bold text-primary text-center mb-6">
+            Continue to OmniGenAI
+        </h2>
+
+        <!-- Form -->
+        <form id="loginForm">
+            <div class="mb-4">
+                <input type="text" id="fullName" placeholder="Enter your Full Name" class="input-focus w-full p-3 border border-gray-300 rounded-lg focus:outline-none" required />
+            </div>
+            <div class="mb-4">
+                <input type="email" id="email" placeholder="Enter your Email Address" class="input-focus w-full p-3 border border-gray-300 rounded-lg focus:outline-none" required />
+            </div>
+            <div class="mb-4">
+                <input type="password" id="password" placeholder="Enter your Password" class="input-focus w-full p-3 border border-gray-300 rounded-lg focus:outline-none" required />
+            </div>
+            <button type="submit" class="btn-hover w-full bg-primary text-white p-3 rounded-lg">Create Account</button>
+        </form>
+
+        <!-- OR Divider -->
+        <div class="flex items-center justify-center my-4">
+            <span class="text-gray-500">or</span>
+        </div>
+
+        <!-- Google Login (Continue with Google) -->
+        <button id="google-signin" class="w-full bg-secondary text-gray-800 p-3 rounded-lg hover:bg-gray-300 transition duration-200">
+            <img aria-hidden="true" alt="google-icon" src="static\images\googleicon.jpg" class="inline-block w-4 h-4 mr-2" />
+            Continue With Google
+        </button>
+
+        <!-- Login Link -->
+        <p class="text-center text-gray-500 mt-4">Already have an account? 
+            <a href="/index" class="text-primary hover:underline">Login</a>
+        </p>
+    </div>
+
+    <!-- JavaScript for Form Validation and Google Login -->
+    <script>
+        // Google Sign-In
+        function handleCredentialResponse(response) {
+            const userObject = jwt_decode(response.credential);
+            console.log(userObject);
+
+            // You can send userObject to your backend for login or registration
+            alert(`Welcome ${userObject.name}!`);
+
+            // Optional: Handle redirection after successful login
+            // window.location.href = '/dashboard'; // For example
+        }
+
+        window.onload = function() {
+            google.accounts.id.initialize({
+                client_id: "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",  // Replace with your Google OAuth client ID
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+                document.getElementById("google-signin"),
+                { theme: "outline", size: "large" }  // Customizing button style
+            );
+        };
+
+        document.getElementById("loginForm").addEventListener("submit", async function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            let fullName = document.getElementById("fullName").value.trim();
+            let email = document.getElementById("email").value.trim();
+            let password = document.getElementById("password").value.trim();
+
+            if (fullName === "" || email === "" || password === "") {
+                alert("❌ Please fill out all fields!");
+                return;
+            }
+
+            const userData = { fullName, email, password };
+
+            try {
+                const response = await fetch("http://localhost:3000/register", {  // Updated Port
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(userData),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert("✅ Successfully created account!");
+                    document.getElementById("loginForm").reset(); // Clear form fields
+                } else {
+                    alert(`❌ ${result.message}`);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("❌ Something went wrong!");
+            }
+        });
+    </script>
+
+</body>
+</html>

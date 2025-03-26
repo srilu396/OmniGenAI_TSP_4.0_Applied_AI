@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Story Generator</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Arial", sans-serif; }
+        body { background: linear-gradient(135deg, #0a0a0a, #1a1a2e); color: #00ffff; text-align: center; min-height: 100vh; display: flex; align-items: center; justify-content: center; flex-direction: column; overflow: hidden; position: relative; }
+        #particles-js { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; }
+        .container { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 20px; border-radius: 12px; box-shadow: 0px 4px 15px rgba(255, 255, 255, 0.1); width: 50%; animation: fadeIn 1s ease-in-out; }
+        h1 { font-size: 26px; margin-bottom: 10px; text-shadow: 0px 0px 10px cyan; }
+        textarea, select, button { width: 100%; padding: 12px; margin-top: 12px; border-radius: 6px; border: none; font-size: 16px; outline: none; }
+        textarea { background: rgba(0, 0, 0, 0.2); color: white; resize: none; height: 80px; }
+        select { background: rgba(0, 0, 0, 0.2); color: white; }
+        button { background: cyan; color: black; font-weight: bold; cursor: pointer; transition: 0.3s; border-radius: 30px; box-shadow: 0px 0px 10px cyan; }
+        button:hover { background: white; box-shadow: 0px 0px 15px cyan; }
+        pre { text-align: left; background: rgba(0, 0, 0, 0.8); color: limegreen; padding: 15px; border-radius: 5px; overflow-x: auto; max-height: 300px; margin-top: 15px; font-size: 14px; }
+        .mic-button { background: red; color: white; font-size: 16px; padding: 10px; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; margin: 10px auto; cursor: pointer; }
+        .mic-button.active { background: green; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        .nav-buttons { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .nav-buttons button { width: 50px; height: 50px; font-size: 20px; border-radius: 50%; border: none; background: cyan; color: black; cursor: pointer; box-shadow: 0px 0px 10px cyan; }
+        .nav-buttons button:hover { background: white; box-shadow: 0px 0px 15px cyan; }
+    </style>
+</head>
+            
+<body>
+
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
+    <h1>📖 AI Story Generator (🎤 Voice Enabled)</h1>
+    <div class="container">
+        <label>💡 Enter Your Story Idea:</label>
+        <textarea id="storyPrompt" placeholder="E.g., A scientist discovers a parallel universe..."></textarea>
+
+        <!-- 🎤 Voice Input Button -->
+        <div class="mic-button" id="micButton">🎤</div>
+
+        <label>🔍 Select Story Type:</label>
+        <select id="storyType">
+            <option>Story</option>
+            <option>Script</option>
+            <option>Dialogue</option>
+        </select>
+
+        <label>🎭 Select Genre:</label>
+        <select id="genre">
+            <option>Fantasy</option>
+            <option>Sci-Fi</option>
+            <option>Mystery</option>
+            <option>Thriller</option>
+            <option>Horror</option>
+            <option>Romance</option>
+            <option>Comedy</option>
+            <option>Drama</option>
+        </select>
+
+        <button onclick="generateStory()">✨ Generate Story</button>
+
+        <h3>📜 Generated Story:</h3>
+        <pre id="storyOutput">Waiting for input...</pre>
+
+        <h3>🎙 AI Narration:</h3>
+        <button onclick="toggleNarration()" id="narrateButton" disabled>🎙 Play Narration</button>
+    </div>
+</div>
+<div class="nav-buttons">
+    <button onclick="scrollToTop()">⬆</button>
+    <button onclick="scrollToBottom()">⬇</button>
+</div>
+<script>
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function scrollToBottom() {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+    <script>
+        function generateStory() {
+            let storyType = document.getElementById("storyType").value;
+            let genre = document.getElementById("genre").value;
+            let prompt = document.getElementById("storyPrompt").value.trim();
+
+            if (prompt === "") {
+                alert("⚠ Please enter a story idea.");
+                return;
+            }
+
+            document.getElementById("storyOutput").innerText = "⏳ Generating story...";
+            document.getElementById("narrateButton").disabled = true;
+
+            fetch("/generate_story", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ story_type: storyType, genre: genre, prompt: prompt })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert("❌ Error: " + data.error);
+                } else {
+                    document.getElementById("storyOutput").innerText = data.story;
+                    document.getElementById("narrateButton").disabled = false;
+                    startNarration(); // 🆕 Automatically Start Narration After Story Generation
+                }
+            })
+            .catch(error => {
+                alert("❌ Request failed: " + error);
+            });
+        }
+
+        let isNarrating = false;
+        let speechInstance;
+
+        function toggleNarration() {
+            if (!isNarrating) {
+                startNarration();
+            } else {
+                stopNarration();
+            }
+        }
+
+        function startNarration() {
+            let storyText = document.getElementById("storyOutput").innerText;
+            speechInstance = new SpeechSynthesisUtterance(storyText);
+
+            let voiceType = document.getElementById("storyType").value;
+            let voices = speechSynthesis.getVoices();
+            let femaleVoice = voices.find(v => v.name.includes("Google UK English Female")) || voices.find(v => v.name.includes("Google US English"));
+
+            if (voiceType === "Story") {
+                speechInstance.voice = femaleVoice;
+            } else if (voiceType === "Script") {
+                speechInstance.voice = voices.find(v => v.name.includes("Google UK English Male")) || femaleVoice;
+            } else {
+                speechInstance.voice = voices.find(v => v.name.includes("Narrator")) || femaleVoice;
+            }
+
+            speechSynthesis.speak(speechInstance);
+            document.getElementById("narrateButton").innerText = "⏸ Pause Narration";
+            isNarrating = true;
+
+            speechInstance.onend = stopNarration;
+        }
+
+        function stopNarration() {
+            speechSynthesis.cancel();
+            document.getElementById("narrateButton").innerText = "🎙 Play Narration";
+            isNarrating = false;
+        }
+
+        // 🎤 Voice Recognition Setup (Fix Mic Button)
+        let micButton = document.getElementById("micButton");
+        let recognition;
+
+        if ("webkitSpeechRecognition" in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = "en-US";
+
+            recognition.onstart = () => micButton.classList.add("active");
+            recognition.onend = () => micButton.classList.remove("active");
+
+            recognition.onresult = event => {
+                let speechText = event.results[0][0].transcript;
+                document.getElementById("storyPrompt").value = speechText;
+            };
+
+            micButton.addEventListener("click", () => recognition.start());
+        } else {
+            micButton.style.display = "none";
+            alert("⚠ Your browser does not support Speech Recognition.");
+        }
+    </script>
+     <!-- Particle.js Library for Animated Background -->
+     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+     <script>
+         particlesJS("particles-js", {
+             particles: {
+                 number: { value: 80, density: { enable: true, value_area: 800 } },
+                 color: { value: "#00ffff" },
+                 shape: { type: "circle" },
+                 opacity: { value: 0.5, random: false },
+                 size: { value: 3, random: true },
+                 line_linked: { enable: true, distance: 150, color: "#00ffff", opacity: 0.4, width: 1 },
+                 move: { enable: true, speed: 2, direction: "none", random: false }
+             },
+             interactivity: {
+                 detect_on: "canvas",
+                 events: {
+                     onhover: { enable: true, mode: "repulse" },
+                     onclick: { enable: true, mode: "push" }
+                 },
+                 modes: {
+                     repulse: { distance: 100 },
+                     push: { particles_nb: 4 }
+                 }
+             },
+             retina_detect: true
+         });
+     </script>
+ 
+</body>
+</html>

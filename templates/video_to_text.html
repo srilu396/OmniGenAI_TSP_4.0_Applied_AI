@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video to Text</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #bfe6fc;
+            text-align: center;
+            padding: 20px;
+        }
+        h2, h3 {
+            color: #007bff;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        input[type="file"], input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #output {
+            margin-top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+    <h2>Upload Video or Enter YouTube URL</h2>
+    <form id="videoForm">
+        <label>
+            <input type="radio" name="choice" value="upload" id="uploadOption" checked> Upload Video
+        </label>
+        <input type="file" id="videoInput"><br>
+        
+        <label>
+            <input type="radio" name="choice" value="youtube" id="youtubeOption"> YouTube URL
+        </label>
+        <input type="text" id="youtubeInput" placeholder="Enter YouTube URL" disabled><br>
+        
+        <button type="submit">Submit</button>
+    </form>
+    
+    <div id="output">
+        <h3>Transcription:</h3>
+        <p id="transcription">Awaiting response...</p>
+        <h3>Summary:</h3>
+        <p id="summary">Awaiting response...</p>
+    </div>
+    
+    <script>
+        $(document).ready(function () {
+            $('input[name="choice"]').change(function () {
+                if ($('#uploadOption').is(':checked')) {
+                    $('#videoInput').prop('disabled', false);
+                    $('#youtubeInput').prop('disabled', true);
+                } else {
+                    $('#videoInput').prop('disabled', true);
+                    $('#youtubeInput').prop('disabled', false);
+                }
+            });
+
+            $('#videoForm').submit(function (e) {
+                e.preventDefault();
+
+                if ($('#uploadOption').is(':checked')) {
+                    let videoFile = $('#videoInput')[0].files[0];
+                    if (!videoFile) {
+                        alert("❌ Please select a video file!");
+                        return;
+                    }
+
+                    let formData = new FormData();
+                    formData.append("video", videoFile);
+
+                    $.ajax({
+                        url: "/upload_video",
+                        type: "POST",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            $('#transcription').text(response.transcription);
+                            $('#summary').text(response.summary);
+                        },
+                        error: function (xhr) {
+                            alert("❌ Error processing request: " + xhr.responseText);
+                        }
+                    });
+
+                } else {
+                    let youtubeURL = $('#youtubeInput').val();
+                    if (!youtubeURL) {
+                        alert("❌ Please enter a YouTube URL!");
+                        return;
+                    }
+
+                    $.ajax({
+                        url: "/process_youtube",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({ youtube_url: youtubeURL }),
+                        success: function (response) {
+                            $('#transcription').text(response.transcription);
+                            $('#summary').text(response.summary);
+                        },
+                        error: function (xhr) {
+                            alert("❌ Error processing request: " + xhr.responseText);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

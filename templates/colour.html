@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 AI Color Palette Generator</title>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            text-align: center;
+            color: #00ffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a2e);
+        }
+
+        /* Particle.js Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        h2 {
+            font-size: 2.2em;
+            margin-bottom: 15px;
+            color: #00ffff;
+            text-shadow: 0px 0px 15px rgba(0, 255, 255, 0.8);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Glassmorphism Container */
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            padding: 25px;
+            border-radius: 20px;
+            width: 70%;
+            max-width: 500px;
+            box-shadow: 0px 8px 25px rgba(0, 255, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: slideDown 1.2s ease-in-out;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            color: white;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        input, select {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0px 4px 10px rgba(0, 255, 255, 0.3);
+            color: white;
+        }
+
+        button {
+            background: #00ffff;
+            color: black;
+            font-weight: bold;
+            transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+            box-shadow: 0 0 12px rgba(0, 255, 255, 0.5);
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0099cc;
+            transform: scale(1.08);
+            box-shadow: 0 0 18px rgba(0, 255, 255, 1);
+        }
+
+        .color-box {
+            width: 100px;
+            height: 100px;
+            display: inline-block;
+            margin: 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 14px;
+            line-height: 100px;
+            transition: transform 0.3s ease-in-out;
+            box-shadow: 0px 4px 12px rgba(0, 255, 255, 0.4);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .color-box:hover {
+            transform: scale(1.1);
+        }
+
+        #colorPalette {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="particles-js"></div> <!-- Particle.js Animated Background -->
+
+    <h2>🎨 AI Color Palette Generator</h2>
+    
+    <div class="container">
+        <form id="colorForm">
+            <label>Website Type:</label>
+            <input type="text" id="websiteType" placeholder="e.g. Portfolio, Blog">
+
+            <label>Mood/Vibe:</label>
+            <input type="text" id="mood" placeholder="e.g. Calm, Energetic">
+
+            <label>Preferred Main Color:</label>
+            <input type="text" id="mainColor" placeholder="e.g. Blue, Red">
+
+            <label>Brightness:</label>
+            <select id="brightness">
+                <option value="Bright">Bright</option>
+                <option value="Pastel">Pastel</option>
+                <option value="Dark">Dark</option>
+            </select>
+
+            <button type="button" onclick="generatePalette()">✨ Generate Palette</button>
+        </form>
+
+        <h3>Generated Colors:</h3>
+        <div id="colorPalette"></div>
+    </div>
+
+    <script>
+        function generatePalette() {
+            let websiteType = document.getElementById("websiteType").value;
+            let mood = document.getElementById("mood").value;
+            let mainColor = document.getElementById("mainColor").value;
+            let brightness = document.getElementById("brightness").value;
+
+            fetch("/generate_palette", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ websiteType, mood, mainColor, brightness })
+            })
+            .then(response => response.json())
+            .then(colors => {
+                let paletteDiv = document.getElementById("colorPalette");
+                paletteDiv.innerHTML = ""; // Clear previous results
+
+                if (colors.length === 0) {
+                    paletteDiv.innerHTML = "<p style='color: red;'>⚠ Failed to generate colors. Try again!</p>";
+                    return;
+                }
+
+                colors.forEach(color => {
+                    let colorBox = document.createElement("div");
+                    colorBox.className = "color-box";
+                    colorBox.style.backgroundColor = color.hex;
+                    colorBox.textContent = color.hex;
+                    paletteDiv.appendChild(colorBox);
+                });
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        // Initialize Particle.js
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#00ffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5 },
+                size: { value: 3, random: true },
+                move: { enable: true, speed: 2 }
+            },
+            interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" } } },
+            retina_detect: true
+        });
+    </script>
+
+</body>
+</html>

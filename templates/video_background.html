@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎥 AI Video Background Remover</title>
+
+    <!-- Particle.js Animated Background -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Arial", sans-serif;
+        }
+
+        /* Background Animation */
+        body {
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: #ffffff;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #0a0a2a, #1a1a2e);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Particle Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            color: rgb(240, 246, 246);
+            text-shadow: 2px 2px 15px rgba(0, 255, 255, 0.9);
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0px 8px 20px rgba(0, 255, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        input[type="file"] {
+            padding: 12px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            outline: none;
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            box-shadow: 0px 4px 10px rgba(0, 255, 255, 0.5);
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            background: cyan;
+            color: black;
+            transition: transform 0.2s ease-in-out, background 0.3s ease-in-out;
+            box-shadow: 0 0 10px cyan;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background: white;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px cyan;
+        }
+
+        #video-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        video {
+            border: 3px solid cyan;
+            box-shadow: 0px 6px 15px rgba(0, 255, 255, 0.5);
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        #download-btn {
+            display: none; /* Initially hidden */
+            background-color: #007BFF;
+        }
+
+        #download-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .nav-buttons { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .nav-buttons button { width: 50px; height: 50px; font-size: 20px; border-radius: 50%; border: none; background: cyan; color: black; cursor: pointer; box-shadow: 0px 0px 10px cyan; }
+        .nav-buttons button:hover { background: white; box-shadow: 0px 0px 15px cyan; }
+    </style>
+</head>
+<body>
+
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+
+    <h1>🎥 AI Video Background Remover</h1>
+    <div class="container">
+        <input type="file" id="video-input" accept="video/*">
+        <button onclick="uploadVideo()">📤 Upload & Process</button>
+
+        <div id="video-container">
+            <div>
+                <h2>🎬 Original Video</h2>
+                <video id="original-video" controls></video>
+            </div>
+        </div>
+
+        <button id="download-btn">⬇ Download Processed Video</button>
+    </div>
+
+    <div class="nav-buttons">
+        <button onclick="scrollToTop()">⬆</button>
+        <button onclick="scrollToBottom()">⬇</button>
+    </div>
+    <script>
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        function scrollToBottom() {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+    </script>
+
+    <script>
+        function uploadVideo() {
+            const input = document.getElementById('video-input');
+            const file = input.files[0];
+
+            if (!file) {
+                alert("⚠ Please select a video file.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('video', file);
+
+            const originalVideo = document.getElementById('original-video');
+            originalVideo.src = URL.createObjectURL(file);
+            originalVideo.load();
+
+            fetch('/remove_video_background', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const downloadBtn = document.getElementById('download-btn');
+                const videoURL = URL.createObjectURL(blob);
+                
+                downloadBtn.style.display = "block"; // Show download button
+                downloadBtn.onclick = () => {
+                    const a = document.createElement("a");
+                    a.href = videoURL;
+                    a.download = "processed_video.mp4";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                };
+            })
+            .catch(error => console.error('❌ Error:', error));
+        }
+    </script>
+
+    <!-- Particle.js Animation -->
+    <script>
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 100 },
+                color: { value: "#00ffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.7, random: true },
+                size: { value: 3, random: true },
+                move: { enable: true, speed: 2 }
+            }
+        });
+    </script>
+
+</body>
+</html>

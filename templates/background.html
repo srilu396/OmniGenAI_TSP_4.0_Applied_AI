@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Background Remover with Gradient</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Arial", sans-serif; }
+        body { background: linear-gradient(135deg, #0a0a0a, #1a1a2e); color: #00ffff; min-height: 100vh; display: flex; align-items: center; justify-content: center; flex-direction: column; overflow: hidden; position: relative; }
+        #particles-js { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; }
+        .container { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 30px; border-radius: 12px; box-shadow: 0px 4px 15px rgba(255, 255, 255, 0.1); width: 90%; max-width: 600px; animation: fadeIn 1s ease-in-out; text-align: center; }
+        h1 { font-size: 28px; margin-bottom: 20px; text-shadow: 0px 0px 10px cyan; }
+        input, select, button { width: 100%; padding: 12px; margin-top: 15px; border-radius: 6px; border: none; font-size: 16px; outline: none; }
+        button { background: cyan; color: black; font-weight: bold; cursor: pointer; transition: 0.3s; border-radius: 30px; box-shadow: 0px 0px 10px cyan; }
+        button:hover { background: white; box-shadow: 0px 0px 15px cyan; }
+        img { margin-top: 20px; max-width: 100%; border-radius: 10px; box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.5); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .nav-buttons { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .nav-buttons button { width: 50px; height: 50px; font-size: 20px; border-radius: 50%; border: none; background: cyan; color: black; cursor: pointer; box-shadow: 0px 0px 10px cyan; }
+        .nav-buttons button:hover { background: white; box-shadow: 0px 0px 15px cyan; }
+    </style>
+</head>
+
+<body>
+
+    <div id="particles-js"></div>
+    <h1>🎨 AI Background Remover</h1>
+    <div class="container">
+        <form id="uploadForm" enctype="multipart/form-data">
+            <label>🖼️ Upload an Image:</label>
+            <input type="file" id="imageInput" name="image" accept="image/*" required>
+
+            <button type="button" id="captureBtn">📸 Take Image from Camera</button>
+
+    <!-- ✅ Add Video & Canvas -->
+    <video id="video" width="100%" height="auto" autoplay style="display: none; margin-top: 15px; border-radius: 10px;"></video>
+    <canvas id="canvas" style="display: none;"></canvas>
+
+            <label>🎨 Choose Background Color:</label>
+            <select id="colorInput" name="color">
+                <option value="Transparent">Transparent</option>
+                <option value="White">White</option>
+                <option value="Black">Black</option>
+                <option value="Red">Red</option>
+                <option value="Green">Green</option>
+                <option value="Blue">Blue</option>
+                <option value="Yellow">Yellow</option>
+                <option value="Gray">Gray</option>
+                <option value="Orange">Orange</option>
+                <option value="Purple">Purple</option>
+                <option value="Pink">Pink</option>
+                <option value="Brown">Brown</option>
+                <option value="Cyan">Cyan</option>
+                <option value="Magenta">Magenta</option>
+                <option value="Lime">Lime</option>
+                <option value="Olive">Olive</option>
+                <option value="Maroon">Maroon</option>
+                <option value="Navy">Navy</option>
+            </select>
+
+            <label>🖌️ Or Choose Gradient:</label>
+            <select id="gradientInput" name="gradient">
+                <option value="None">None</option>
+                <option value="Red-Blue">Red to Blue</option>
+                <option value="Green-Yellow">Green to Yellow</option>
+                <option value="Purple-Pink">Purple to Pink</option>
+                <option value="Black-White">Black to White</option>
+            </select>
+
+            <button type="submit">✨ Remove Background</button>
+        </form>
+
+        <h3>🔽 Output Image:</h3>
+        <img id="outputImage" src="#" alt="Processed Image" style="display: none;">
+    </div>
+
+    
+
+
+<div class="nav-buttons">
+    <button onclick="scrollToTop()">⬆</button>
+    <button onclick="scrollToBottom()">⬇</button>
+</div>
+<script>
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function scrollToBottom() {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const fileInput = document.getElementById('imageInput');
+            const colorInput = document.getElementById('colorInput');
+            const gradientInput = document.getElementById('gradientInput');
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
+            formData.append('color', colorInput.value);
+            formData.append('gradient', gradientInput.value);
+
+            fetch('/remove_background', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const outputImage = document.getElementById('outputImage');
+                outputImage.src = URL.createObjectURL(blob);
+                outputImage.style.display = 'block';
+            })
+            .catch(error => alert('❌ Error: ' + error));
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#00ffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5 },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: "#00ffff", opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2 }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" } },
+                modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        });
+    </script>
+
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const captureBtn = document.getElementById('captureBtn');
+    const colorInput = document.getElementById('colorInput');
+    const gradientInput = document.getElementById('gradientInput');
+    
+    // Access Webcam and Show Stream
+    captureBtn.addEventListener('click', async function () {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+            video.style.display = 'block';
+    
+            // Wait 2 seconds and then capture frame automatically
+            setTimeout(() => {
+                captureImageFromVideo(stream);
+            }, 2000);  // Adjust delay if needed
+    
+        } catch (error) {
+            alert('🚫 Unable to access camera: ' + error);
+        }
+    });
+    
+    // Capture Image and Send to Flask
+    function captureImageFromVideo(stream) {
+        const context = canvas.getContext('2d');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+        video.style.display = 'none';
+        stream.getTracks().forEach(track => track.stop());  // Stop camera
+    
+        // Convert Canvas Image to Blob
+        canvas.toBlob(function (blob) {
+            const formData = new FormData();
+            formData.append('image', blob, 'webcam-image.png');  // Fake filename to send image
+            formData.append('color', colorInput.value);
+            formData.append('gradient', gradientInput.value);
+    
+            // Send to Flask backend
+            fetch('/remove_background', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const outputImage = document.getElementById('outputImage');
+                outputImage.src = URL.createObjectURL(blob);
+                outputImage.style.display = 'block';
+            })
+            .catch(error => alert('❌ Error: ' + error));
+        }, 'image/png');
+    }
+    </script>
+    
+
+</body>
+
+</html>

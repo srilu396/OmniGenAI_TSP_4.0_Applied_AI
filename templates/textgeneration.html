@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniGenAI - Futuristic AI Platform</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0D0D0D, #121212, #1A1A1A);
+            color: white;
+            text-align: center;
+            overflow: hidden;
+        }
+        @keyframes neonGlow {
+            0% { text-shadow: 0 0 5px #00A3FF, 0 0 10px #9D00FF; }
+            50% { text-shadow: 0 0 10px #00A3FF, 0 0 20px #9D00FF; }
+            100% { text-shadow: 0 0 5px #00A3FF, 0 0 10px #9D00FF; }
+        }
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: rgba(18, 18, 18, 0.9);
+            border-bottom: 2px solid #00A3FF;
+        }
+        h1 {
+            font-size: 42px;
+            animation: neonGlow 2s infinite alternate;
+        }
+        .cta {
+            padding: 15px 30px;
+            background: linear-gradient(to right, #00A3FF, #9D00FF);
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: 0.3s ease-in-out;
+        }
+        .cta:hover {
+            box-shadow: 0 0 15px #00A3FF, 0 0 25px #9D00FF;
+        }
+        .feature-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        .feature-btn {
+            width: 200px;
+            height: 150px;
+            background: #1A1A1A;
+            border: 3px solid #00A3FF;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 10px;
+            transition: 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .feature-btn:hover {
+            background: #00A3FF;
+            color: black;
+            box-shadow: 0 0 15px #00A3FF, 0 0 25px #9D00FF;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>OmniGenAI</h1>
+    </header>
+    
+    <section id="hero">
+        <h2>Text to Text Generation</h2>
+        <button class="cta" onclick="window.location.href='/'">Get Started for Free</button>
+    </section>
+
+    <div class="feature-buttons">
+        <button class="feature-btn" onclick="window.location.href='/translator'">Translation</button>
+        <button class="feature-btn" onclick="window.location.href='/text_to_audio'">Audio</button>
+        <button class="feature-btn" onclick="window.location.href='/document'">Document Q&A</button>
+        <button class="feature-btn" onclick="window.location.href='/colour'">Colouring</button>
+        <button class="feature-btn" onclick="window.location.href='/grammar'">Grammar</button>
+        <button class="feature-btn" onclick="window.location.href='/code_generator'">Code Generator</button>
+        <button class="feature-btn" onclick="window.location.href='/story'">AI Story & Script Writing</button>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 OmniGenAI. All rights reserved.</p>
+    </footer>
+</body>
+</html>

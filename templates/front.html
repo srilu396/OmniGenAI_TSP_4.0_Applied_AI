@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniGenAI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+        
+        /* Background Image */
+        .image-bg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 100vh;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            z-index: -1;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+        h1 {
+            font-size: 60px;
+            color: white;
+        }
+        h2 {
+            font-size: 30px;
+            color: white;
+        }
+        p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            background: #00A3FF;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            color: white;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #7700ff;
+        }
+
+        /* Logo Styling */
+        .logo {
+            width: 120px; /* Adjust size as needed */
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <img src="static\images\fronti.jpg" alt="Background" class="image-bg">
+    
+    <div class="container">
+        <img src="static\images\omnigenaiLogo.png" alt="OmniGenAI Logo" class="logo">
+        <h2>welcome to </h2>
+        <h1>OmniGenAI</h1>
+        <div class="buttons">
+            <button onclick="window.location.href='/login'">Login</button>
+        </div>
+    </div>
+</body>
+</html>
